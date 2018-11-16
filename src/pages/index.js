@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 // import InputBase from '@material-ui/core/InputBase';
 import { graphql } from 'gatsby';
 import { debounce, uniq } from 'lodash';
-import Main from '../components/Main';
+import Main from '../components/main';
 import NavHeader from '../components/navheader';
 import Card from '../components/card';
 import Search from '../components/search';

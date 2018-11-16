@@ -7,11 +7,11 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import ArrowBack from '@material-ui/icons/ArrowBack';
-import Main from '../components/Main';
+import Main from '../components/main';
 import NavHeader from '../components/navheader';
 import Code from '../components/code';
-import Tabs from '../components/Tabs';
-import Tab from '../components/Tab';
+import Tabs from '../components/tabs';
+import Tab from '../components/tab';
 import withTheme from '../components/withTheme';
 import placeholderImg from '../components/placeholder';
 
