@@ -1,5 +1,5 @@
 image:
-  name: galacticfog/docker-yarn-debian:10.30.0
+  name: galacticfog/docker-yarn-debian:10.13.0
 
 pages:
   stage: deploy
