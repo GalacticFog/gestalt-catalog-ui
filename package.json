@@ -19,6 +19,7 @@
     "babel-plugin-styled-components": "^1.8.0",
     "brace": "^0.11.1",
     "chalk": "^2.4.1",
+    "core-js": "^2.5.7",
     "gatsby": "^2.0.50",
     "gatsby-plugin-styled-components": "^3.0.2",
     "gatsby-plugin-typography": "^2.2.1",
