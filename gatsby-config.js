@@ -25,7 +25,7 @@ module.exports = {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `pages`,
-        path: path.join(__dirname, catalogCompiledDirectory),
+        path: path.join(catalogCompiledDirectory),
       },
     },
   ],
