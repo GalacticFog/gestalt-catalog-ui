@@ -6,7 +6,7 @@ const { exec } = require('child_process');
 const { promisify } = require('util');
 const chalk = require('chalk');
 
-const scriptsPath = path.resolve(__dirname);
+const scriptsPath = path.resolve(process.cwd(), 'scripts');
 const execSync = promisify(exec);
 
 async function pull() {

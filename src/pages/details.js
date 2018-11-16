@@ -139,9 +139,7 @@ const Details = ({ data }) => {
 
                 <Tab title="YAML">
                   <ReadmeSection>
-                    <Code>
-                      {AssetsYaml}
-                    </Code>
+                    <Code value={AssetsYaml}/>
                   </ReadmeSection>
                 </Tab>
               </Tabs>
