@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if [[ -z "$1" ]] || [[ -z "$2" ]] || [[ "$1" == "-h" ]]; then
   echo "Usage: `basename $0` [sourcegitrepo] [localrepo]"
