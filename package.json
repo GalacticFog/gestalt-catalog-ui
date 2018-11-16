@@ -9,7 +9,7 @@
   "scripts": {
     "develop:no-compile": "gatsby develop",
     "develop": "./scripts/build.sh && gatsby develop",
-    "build": "gatsby build",
+    "build": "./scripts/build.sh && gatsby build",
     "serve": "./scripts/build.sh && gatsby serve"
   },
   "dependencies": {
