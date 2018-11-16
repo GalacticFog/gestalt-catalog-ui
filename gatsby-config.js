@@ -7,6 +7,7 @@ const {
 } = require('./config');
 
 module.exports = {
+  pathPrefix: "/gestalt-catalog-ui",
   siteMetadata: {
     title,
     description,

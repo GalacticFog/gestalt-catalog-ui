@@ -13,7 +13,7 @@ import Code from '../components/code';
 import Tabs from '../components/tabs';
 import Tab from '../components/tab';
 import withTheme from '../components/withTheme';
-import placeholderImg from '../components/placeholder';
+import placeholderImg from './placeholder.png';
 
 const Header = styled.header`
   display: flex;
