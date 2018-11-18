@@ -9,7 +9,7 @@ const NavHeader = styled.header`
   background-color: #FAFAFA;
   display: flex;
   align-items: center;
-  height: 64px;
+  height: 56px;
   width: 100%;
   border-bottom: 1px solid #E5E5E5;
   padding-left: 16px;
