@@ -18,7 +18,7 @@ const CardMediaStyle = styled(CardMedia)`
   height: 96px;
 `;
 
-const CardItem = memo(({ node }) => (
+const CardItem = memo(({ node, onDeploy }) => (
   <Card elevation={1}>
     <CardMediaStyle
       component="img"
@@ -36,8 +36,7 @@ const CardItem = memo(({ node }) => (
     <CardActions>
       <Row center>
         <Button
-          component={Link}
-          to={node.fields.slug}
+          onClick={() => onDeploy(node)}
           size="small"
           color="primary"
         >
