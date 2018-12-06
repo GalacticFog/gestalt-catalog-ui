@@ -10,12 +10,13 @@ import Select from '@material-ui/core/Select';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import Typography from '@material-ui/core/Typography';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import Form from '../components/form';
+import Code from '../components/code';
 import withContext from '../hocs/withContext';
 import metaAPI from '../metaAPI';
 
@@ -27,7 +28,7 @@ const Progress = styled(LinearProgress)`
 class FormDialog extends React.Component {
   state = {
     providers: [],
-    error: null,
+    response: null,
     pending: false,
     providerId: '',
     namespace: '',
@@ -80,10 +81,11 @@ class FormDialog extends React.Component {
 
     try {
       this.setState({ error: null, pending: true });
-      await API.deployKube(providerId, namespace, releaseName, node.AssetsYaml);
-      this.handleClose();
+      const { data } = await API.deployKube(providerId, namespace, releaseName, node.AssetsYaml);
+      this.setState({ response: data })
+      // this.handleClose();
     } catch (error) {
-      this.setState({ error: get(error, 'response.data') || error });
+      this.setState({ response: get(error, 'response.data') || error });
     } finally {
       this.setState({ pending: false });
     }
@@ -91,7 +93,7 @@ class FormDialog extends React.Component {
 
   render() {
     const { node } = this.props;
-    const { providerId, providers, error, pending } = this.state;
+    const { providerId, providers, response, pending } = this.state;
 
     return (
       <Dialog
@@ -147,23 +149,25 @@ class FormDialog extends React.Component {
         
           </DialogContent>
 
-          {error && <DialogContent>
-            <DialogContentText>
-              <div>{JSON.stringify(error, null, 2)}</div>
-            </DialogContentText>
-          </DialogContent>}
-
           {pending && <Progress id="loading" />}
           
           <DialogActions>
             <Button onClick={this.handleClose} color="primary" disabled={pending}>
-              Cancel
+              {response ? 'Close' : 'Cancel'}
             </Button>
+            {!response && 
             <Button color="primary" type="submit" disabled={!providerId || pending}>
               Deploy
-            </Button>
+            </Button>}
           </DialogActions>
         </Form>
+        
+        {response && <DialogContent>
+          <Typography variant="subtitle2">
+            Deploy Status
+          </Typography>
+        </DialogContent>}
+        {response && <Code mode="json" value={JSON.stringify(response, null, 2)} />}
       </Dialog>
     );
   }
