@@ -1,11 +1,12 @@
 import React from 'react';
 import AceEditor from 'react-ace';
 import 'brace/mode/yaml';
+import 'brace/mode/json';
 import 'brace/theme/terminal';
 
-const Code = ({ value }) => (
+const Code = ({ value, mode = "yaml" }) => (
   <AceEditor
-    mode="yaml"
+    mode={mode}
     theme="terminal"
     name="YAML-Assets"
     value={value}
