@@ -41,7 +41,7 @@ export default function API(ctx = defaultCtx) {
   }
 
   async function deployKube(providerId, namespace, releaseName, payload) {
-    return await kubeAPI.post(`${ctx.fqon}/providers/${providerId}/kube/chart?namespace=${namespace}&source=helm&releaseName=${releaseName}`, payload);
+    return await kubeAPI.post(`${ctx.fqon}/providers/${providerId}/kube/chart?namespace=${namespace}&source=helm&releaseName=${releaseName}&metaEnv=${ctx.environmentId}`, payload);
   }
 
   async function getProviders(type) {
