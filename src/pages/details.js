@@ -53,23 +53,23 @@ const ReadmeSection = styled.div`
 class Details extends Component {
   handleDeploy = async () => {
     const { context } = this.props;
-    const { catalogCompiledJson: { AssetsYaml } } = this.props.data;
+    const { catalogCompiledJson: { payload } } = this.props.data;
     const API = new metaAPI(context);
 
-    await API.deployKube('123', 'uuid', 'release', AssetsYaml);
+    await API.deployKube('123', 'uuid', 'release', payload);
   }
 
-  renderRequirements = () => {
-    const { catalogCompiledJson: { Requirements} } = this.props.data;
+  renderrequirements = () => {
+    const { catalogCompiledJson: { requirements} } = this.props.data;
 
-    if (Requirements.dependencies.length > 0) {
+    if (requirements.dependencies.length > 0) {
       return (
         <React.Fragment>
           <Typography gutterBottom variant="h6">
             Dependencies
         </Typography>
 
-          {Requirements.dependencies.map((dep, i) => (
+          {requirements.dependencies.map((dep, i) => (
             <Typography key={i} gutterBottom component="p">
               {dep.name}
             </Typography>
@@ -82,7 +82,7 @@ class Details extends Component {
   }
 
   render() {
-    const { catalogCompiledJson: { Chart, Readme, AssetsYaml }, catalogCompiledJson } = this.props.data;
+    const { catalogCompiledJson: { meta, readme, payload }, catalogCompiledJson } = this.props.data;
 
     return (
       <ModalProvider>
@@ -102,11 +102,11 @@ class Details extends Component {
                 <Col flex={12}>
                   <Header>
                     <Logo>
-                      <Img src={Chart.icon || placeholderImg} />
+                      <Img src={meta.icon || placeholderImg} />
                     </Logo>
                     <TitleSection>
                       <Typography gutterBottom variant="h4">
-                        {Chart.name}
+                        {meta.name}
                       </Typography>
 
                       <ModalConsumer>
@@ -135,7 +135,7 @@ class Details extends Component {
                           </Typography>
 
                             <Typography gutterBottom component="p">
-                              {Chart.version}
+                              {meta.version}
                             </Typography>
 
                             <Typography gutterBottom variant="h6">
@@ -143,12 +143,12 @@ class Details extends Component {
                           </Typography>
 
                             <Typography gutterBottom component="p">
-                              {Chart.description}
+                              {meta.description}
                             </Typography>
                           </Summary>
 
                           <Summary>
-                            {this.renderRequirements()}
+                            {this.renderrequirements()}
                           </Summary>
                         </Col>
                       </Row>
@@ -157,14 +157,14 @@ class Details extends Component {
                     <Tab title="Readme">
                       <ReadmeSection>
                         <Typography component="p">
-                          <div dangerouslySetInnerHTML={{ __html: Readme }} />
+                          <div dangerouslySetInnerHTML={{ __html: readme }} />
                         </Typography>
                       </ReadmeSection>
                     </Tab>
 
                     <Tab title="YAML">
                       <ReadmeSection>
-                        <Code value={AssetsYaml} />
+                        <Code value={payload} />
                       </ReadmeSection>
                     </Tab>
                   </Tabs>
@@ -181,7 +181,7 @@ class Details extends Component {
 export const query = graphql`
   query ($slug: String) {
     catalogCompiledJson(fields: {slug: {eq: $slug}}) {
-      Chart {
+      meta {
         name
         version
         appVersion
@@ -190,17 +190,17 @@ export const query = graphql`
         engine
         icon
       }
-      Assets {
+      assets {
         kind
         type
       }
-      Readme
-      Requirements {
+      readme
+      requirements {
         dependencies {
           name
         }
       }
-      AssetsYaml
+      payload
     }
   }
 `

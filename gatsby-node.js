@@ -43,7 +43,7 @@ exports.createPages = ({ graphql, actions }) => {
               fields {
                 slug
               }
-              Chart {
+              meta {
                 name
               }
             }
@@ -52,7 +52,6 @@ exports.createPages = ({ graphql, actions }) => {
       }
     `).then(result => {
         result.data.allCatalogCompiledJson.edges.forEach(({ node }) => {
-          const slug = path.join(node.Chart.name);
 
           createPage({
             path: node.fields.slug,

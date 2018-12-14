@@ -22,13 +22,13 @@ const CardItem = memo(({ node, onDeploy }) => (
   <Card elevation={1}>
     <CardMediaStyle
       component="img"
-      image={node.Chart.icon || placeholderImg}
-      title={node.Chart.name}
+      image={node.meta.icon || placeholderImg}
+      title={node.meta.name}
     />
     <CardActionArea component={Link} to={node.fields.slug}>
       <CardContent>
         <Typography gutterBottom variant="h5" component="h2" align="center">
-          {node.Chart.name}
+          {node.meta.name}
         </Typography>
       </CardContent>
     </CardActionArea>

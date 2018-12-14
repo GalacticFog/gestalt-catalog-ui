@@ -81,7 +81,7 @@ class FormDialog extends React.Component {
 
     try {
       this.setState({ error: null, pending: true });
-      const { data } = await API.deployKube(providerId, namespace, releaseName, node.AssetsYaml);
+      const { data } = await API.deployKube(providerId, namespace, releaseName, node.payload);
       this.setState({ response: data })
       // this.handleClose();
     } catch (error) {
@@ -103,7 +103,7 @@ class FormDialog extends React.Component {
         fullWidth
       >
         <Form onSubmit={this.handleSubmit} disabled={pending} autoComplete="off">
-          <DialogTitle id="form-dialog-title">{`Deploy ${node.Chart.name}`}</DialogTitle>
+          <DialogTitle id="form-dialog-title">{`Deploy ${node.meta.name}`}</DialogTitle>
           <DialogContent>           
             <FormControl fullWidth required>
               <InputLabel htmlFor="providerId">Provider</InputLabel>

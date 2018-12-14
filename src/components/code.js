@@ -8,7 +8,7 @@ const Code = ({ value, mode = "yaml" }) => (
   <AceEditor
     mode={mode}
     theme="terminal"
-    name="YAML-Assets"
+    name="YAML-assets"
     value={value}
     readOnly
     width="100%"

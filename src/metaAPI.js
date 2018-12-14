@@ -1,9 +1,9 @@
 import axios from 'axios';
-import config from '../config';
+import { deployBaseURL, deployTimeout } from '../config';
 
 // Axios Defaults
-axios.defaults.baseURL = config.deployBaseURL;
-axios.defaults.timeout = config.deployTimeout;
+axios.defaults.baseURL = deployBaseURL;
+axios.defaults.timeout = deployTimeout;
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.headers.common.Accept = 'application/json';
 
