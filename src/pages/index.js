@@ -118,7 +118,7 @@ class Index extends Component {
       return filterBy ? item.node.type === filterBy : item;
       })
       .filter(item => {
-        return item.node.Chart.name.toLowerCase()
+        return item.node.meta.name.toLowerCase()
           .includes(searchText.toLowerCase());
       });
 
@@ -187,7 +187,7 @@ export const query = graphql`
           }
           id
           type
-          Chart {
+          meta {
             name
             version
             appVersion
@@ -197,11 +197,11 @@ export const query = graphql`
             icon
             keywords
           }
-          Assets {
+          assets {
             kind
             type
           }
-          AssetsYaml
+          payload
         }
       }
     }
