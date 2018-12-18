@@ -9,7 +9,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import placeholderImg from '../pages/placeholder.png';
+import placeholderImg from '../static//placeholder.png';
 
 const CardMediaStyle = styled(CardMedia)`
   margin: auto;
@@ -32,6 +32,12 @@ const CardItem = memo(({ node, onDeploy }) => (
         </Typography>
       </CardContent>
     </CardActionArea>
+
+    {/* <CardContent>
+      <Typography gutterBottom component="p">
+        {node.meta.description}
+      </Typography>
+    </CardContent> */}
 
     <CardActions>
       <Row center>
