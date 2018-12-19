@@ -2,12 +2,12 @@
 The Gestalt Catalog is under **heavy development**.
 
 ## Goals
-* Allow you render a Ui store catalog based off of any Helm Chart based repo
+* Allow you render a Ui store catalog based from some collection of resources (Helm Charts, Swagger docs, serverless configs, etc...)
 
 ## Workflow
-* Compile a catalog based off of any valid Helm Chart  based repo
+* Compile a catalog based off of a target source code repo
 * Statically build a Ui 
-* publish it to a location where it can be hosted (S3/Minio, etc...)
+* Publish it to a location where it can be hosted (S3/Minio, etc...) via CI
 
 ## Compiler Plugins
 The `config` directory conists of an main index config file, a plugin-manifest and a directory of plugins you wish to register
@@ -23,7 +23,7 @@ A plugin and its config can be added the the `config/manifest.js` file. A plugin
 
  e.g:
 
-```
+```javascript
 const myPlugin = require('./plugins/plugin');
 
 module.exports = [
@@ -37,7 +37,7 @@ module.exports = [
 
   .....other plugins
 ];
-
+```
 
 ### Plugin Development
 Currently, plugins must be locally checked into the `config/plugins` directory.
@@ -45,7 +45,8 @@ Currently, plugins must be locally checked into the `config/plugins` directory.
 A plugin simply acts against a single directory and compiles the contents into the desired format nescessary to display in the catalog ui.  The plugin must return a valid schema. You can find a schema representation of this schema in `lib/schema`. It's up to you on how you want to fill in the missing properties within the plugin.
 
 To author a new plugin create a new file using the following boilerplate:
-```
+
+```javascript
 const Plugin = require('../../lib/Plugin');
 const { fileExists, execute } = require('../../lib/util');
 
@@ -68,11 +69,14 @@ class Helm extends Plugin {
     }
   }
 }
-
-#### lib
 ```
+
+#### Utility mixins
+
+```javascript
 const { ...helpers } = require('../../lib/util');
 ```
+
 `lib/util` gives you access to several helpers:
 
 ```
@@ -86,12 +90,14 @@ execute,
 
 
 ## Running in development
+
 ```
 yarn install
 yarn develop
 ```
 
 ##  Pre-Reqs
+
 ```
 npm install -g gatsby
 brew install kubernetes-helm
