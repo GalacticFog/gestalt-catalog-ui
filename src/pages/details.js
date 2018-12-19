@@ -16,7 +16,7 @@ import Code from '../components/code';
 import Tabs from '../components/tabs';
 import Tab from '../components/tab';  
 import withTheme from '../components/withTheme';
-import placeholderImg from './placeholder.png';
+import placeholderImg from '../static/placeholder.png';
 import withContext from '../hocs/withContext';
 import metaAPI from '../metaAPI';
 
@@ -48,6 +48,7 @@ const Img = styled.img`
 
 const ReadmeSection = styled.div`
   padding: 8px;
+  /* overflow: auto; */
 `;
 
 class Details extends Component {
@@ -88,7 +89,7 @@ class Details extends Component {
       <ModalProvider>
         <ModalRoot />
         <Main>
-          <Row center>
+          <Row justifyContent="center" fill>
             <NavHeader>
               <IconButton
                 component={Link}
@@ -96,9 +97,13 @@ class Details extends Component {
               >
                 <ArrowBack />
               </IconButton>
+              <Typography variant="h6" color="inherit">
+                Catalog Items
+              </Typography>
             </NavHeader>
-            <Col flex={9} xs={12} sm={12}>
-              <Row gutter={5}>
+            
+            <Col flex={6} xs={12} sm={12} md={6}>
+              <Row gutter={10}>
                 <Col flex={12}>
                   <Header>
                     <Logo>
@@ -120,15 +125,13 @@ class Details extends Component {
                           </Button>
                         )}
                       </ModalConsumer>
-
-
                     </TitleSection>
                   </Header>
 
                   <Tabs>
                     <Tab title="Details">
                       <Row gutter={10}>
-                        <Col flex={6} xs={12} sm={12}>
+                        <Col flex={12}>
                           <Summary>
                             <Typography gutterBottom variant="h6">
                               Version
@@ -161,15 +164,12 @@ class Details extends Component {
                         </Typography>
                       </ReadmeSection>
                     </Tab>
-
-                    <Tab title="YAML">
-                      <ReadmeSection>
-                        <Code value={payload} />
-                      </ReadmeSection>
-                    </Tab>
                   </Tabs>
                 </Col>
               </Row>
+            </Col>
+            <Col flex={6} xs={12} sm={12} md={6}>
+              <Code value={payload} />
             </Col>
           </Row>
         </Main>
@@ -184,15 +184,9 @@ export const query = graphql`
       meta {
         name
         version
-        appVersion
         description
         home
-        engine
         icon
-      }
-      assets {
-        kind
-        type
       }
       readme
       requirements {

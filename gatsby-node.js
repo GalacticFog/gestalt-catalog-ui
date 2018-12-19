@@ -2,15 +2,10 @@ const path = require('path');
 const { createFilePath } = require(`gatsby-source-filesystem`);
 
 exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
-  if (stage === "build-html") {
+  if (stage === 'build-html') {
     actions.setWebpackConfig({
       module: {
-        rules: [
-          {
-            test: /ace/,
-            use: loaders.null(),
-          },
-        ],
+        rules: [],
       },
     })
   }
@@ -51,19 +46,21 @@ exports.createPages = ({ graphql, actions }) => {
         }
       }
     `).then(result => {
-        result.data.allCatalogCompiledJson.edges.forEach(({ node }) => {
+      result.data.allCatalogCompiledJson.edges.forEach(({ node }) => {
 
-          createPage({
-            path: node.fields.slug,
-            component: path.resolve(`./src/pages/details.js`),
-            context: {
-              // Data passed to context is available
-              // in page queries as GraphQL variables.
-              slug: node.fields.slug,
-            },
-          });
-        })
-        resolve();
-      });
+        createPage({
+          path: node.fields.slug,
+          component: path.resolve(`./src/pages/details.js`),
+          context: {
+            // Data passed to context is available
+            // in page queries as GraphQL variables.
+            slug: node.fields.slug,
+          },
+        });
+      })
+      resolve();
+    }).catch(error => {
+      reject(error);
+    });
   });
 }

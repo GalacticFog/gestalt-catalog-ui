@@ -190,16 +190,9 @@ export const query = graphql`
           meta {
             name
             version
-            appVersion
             description
             home
-            engine
             icon
-            keywords
-          }
-          assets {
-            kind
-            type
           }
           payload
         }
