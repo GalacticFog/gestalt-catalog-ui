@@ -6,7 +6,7 @@ module.exports = [
     plugin: helmCompiler,
     options: {
       name: 'galactic-helms',
-      repo: 'https://gitlab.com/galacticfog/sample-catalog.git',
+      repo: 'https://github.com/GalacticFog/gestalt-poc',
       directories: ['catalog/helm'],
     },
   },
@@ -14,7 +14,7 @@ module.exports = [
     plugin: apiCompiler,
     options: {
       name: 'galactic-apis',
-      repo: 'https://gitlab.com/galacticfog/sample-catalog.git',
+      repo: 'https://github.com/GalacticFog/gestalt-poc',
       directories: ['catalog/apis'],
     },
   },
