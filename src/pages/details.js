@@ -13,6 +13,7 @@ import Deploy from '../components/deployModal';
 import Main from '../components/main';
 import NavHeader from '../components/navheader';
 import Code from '../components/code';
+import Swagger from '../components/swagger';
 import Tabs from '../components/tabs';
 import Tab from '../components/tab';  
 import withTheme from '../components/withTheme';
@@ -57,7 +58,7 @@ class Details extends Component {
     const { catalogCompiledJson: { payload } } = this.props.data;
     const API = new metaAPI(context);
 
-    await API.deployKube('123', 'uuid', 'release', payload);
+    await API.deployKube('123', 'uuid', 'release', payload.data);
   }
 
   renderrequirements = () => {
@@ -82,8 +83,19 @@ class Details extends Component {
     return null;
   }
 
+  renderPreview() {
+    const { catalogCompiledJson: { payload } } = this.props.data;
+
+    switch (payload.render) {
+      case 'swagger':
+        return <Swagger value={JSON.parse(payload.data)} />;
+      default:
+        return <Code value={payload.data} mode={payload.type} />;
+    }
+  }
+
   render() {
-    const { catalogCompiledJson: { meta, readme, payload }, catalogCompiledJson } = this.props.data;
+    const { catalogCompiledJson: { meta, readme, deployable }, catalogCompiledJson } = this.props.data;
 
     return (
       <ModalProvider>
@@ -114,7 +126,8 @@ class Details extends Component {
                         {meta.name}
                       </Typography>
 
-                      <ModalConsumer>
+                      {deployable &&
+                        <ModalConsumer>
                         {({ showModal }) => (
                           <Button
                             variant="contained"
@@ -124,7 +137,7 @@ class Details extends Component {
                             Deploy
                           </Button>
                         )}
-                      </ModalConsumer>
+                      </ModalConsumer>}
                     </TitleSection>
                   </Header>
 
@@ -157,19 +170,23 @@ class Details extends Component {
                       </Row>
                     </Tab>
 
-                    <Tab title="Readme">
+                    {readme
+                      ?
+                      <Tab title="Readme">
                       <ReadmeSection>
                         <Typography component="p">
                           <div dangerouslySetInnerHTML={{ __html: readme }} />
                         </Typography>
                       </ReadmeSection>
-                    </Tab>
+                      </Tab>
+                      : <div />
+                    }
                   </Tabs>
                 </Col>
               </Row>
             </Col>
             <Col flex={6} xs={12} sm={12} md={6}>
-              <Code value={payload} />
+              {this.renderPreview()}
             </Col>
           </Row>
         </Main>
@@ -194,7 +211,12 @@ export const query = graphql`
           name
         }
       }
-      payload
+      deployable
+      payload {
+        type
+        render
+        data
+      }
     }
   }
 `

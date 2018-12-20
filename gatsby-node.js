@@ -5,7 +5,12 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
   if (stage === 'build-html') {
     actions.setWebpackConfig({
       module: {
-        rules: [],
+        rules: [
+          {
+            test: /swagger-ui/,
+            loader: loaders.null,
+          }
+        ],
       },
     })
   }
