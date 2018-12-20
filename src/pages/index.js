@@ -41,6 +41,10 @@ const CategoryButton = styled.button`
   height: 32px;
 `;
 
+const CategoryItem = styled.div`
+  cursor: pointer;
+`;
+
 class Index extends Component {
   constructor(props) {
     super(props);
@@ -103,9 +107,11 @@ class Index extends Component {
         key={type}
         onClick={() => this.handleCatClick(type)}
       >
-        <Typography>
+        <CategoryItem>
+          <Typography>
           {`${type} (${typeItems.filter(t => t === type).length})`}
-        </Typography>
+          </Typography>
+        </CategoryItem>
       </CategoryButton>
     ));
   }

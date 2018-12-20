@@ -6,12 +6,17 @@ const path = require('path');
 
 class Helm extends Plugin {
   async helmCompile(filepath) {
-    await execute(`helm lint ${filepath}`);
+    const { options: { lint = true } } = this.context;
+
+    if (lint) {
+      await execute(`helm lint ${filepath}`);
+    }
+    
     await execute(`helm dep update ${filepath}`);
     return await execute(`helm template ${filepath}`);
   }
 
-  async generateRequirements(path) {
+  async generateRequirements( path) {
     return await fileExists(path)
       ? await readFile(path)
       : null;
