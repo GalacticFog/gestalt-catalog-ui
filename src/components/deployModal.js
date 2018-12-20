@@ -81,7 +81,7 @@ class FormDialog extends React.Component {
 
     try {
       this.setState({ error: null, pending: true });
-      const { data } = await API.deployKube(providerId, namespace, releaseName, node.payload);
+      const { data } = await API.deployKube(providerId, namespace, releaseName, node.payload.data);
       this.setState({ response: data })
       // this.handleClose();
     } catch (error) {
