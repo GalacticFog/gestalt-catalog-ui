@@ -3,10 +3,6 @@
 const Plugin = require('../../lib/Plugin');
 const { readFile, fileExists, execute, readmeToHTML } = require('../../lib/util');
 const path = require('path');
-const jsYaml = require(`js-yaml`);
-const chalk = require('chalk');
-const chartMatch = new RegExp(/Chart.(yaml|yml)/gi);
-// const requirementsMatch = new RegExp(/requirements.(yaml|yml)/gi);
 
 class Helm extends Plugin {
   async helmCompile(filepath) {
@@ -23,39 +19,40 @@ class Helm extends Plugin {
   
   async handler() {
     const { filePath, files } = this.context;
+    const chartMatch = new RegExp(/Chart.(yaml|yml)/gi);
     const chart = files.filter(f => chartMatch.test(f));
 
     if (chart.length) {
-      try {
-        const { stdout } = await this.helmCompile(filePath);
-        const chartPath = path.join(filePath, chart[0]);
-        const chartout = await readFile(chartPath)
+      const { stdout } = await this.helmCompile(filePath);
+      const chartPath = path.join(filePath, chart[0]);
+      const meta = await readFile(chartPath);
+      const requirements = await this.generateRequirements(
+        path.join(filePath, 'requirements.yaml')
+      );
+      
+      // Compile README
+      const readme = await readmeToHTML(
+        path.join(filePath, 'README.md')
+      );
 
-        // Compile README
-        const readme = await readmeToHTML(
-          path.join(filePath, 'README.md')
-        );
+      const model = {
+        meta,
+        readme,
+        deployable: true,
+        payload: {
+          type: 'yaml',
+          render: 'code',
+          data: stdout,
+        },
+      };
 
-        // Compile requirements
-        const requirementsout = await this.generateRequirements(
-          path.join(filePath, 'requirements.yaml')
-        );
-
-        // convert yaml to json
-        const meta = jsYaml.loadAll(chartout).filter(Boolean)[0];
-        // const assets = jsYaml.loadAll(stdout).filter(Boolean);
-        const requirements = jsYaml.loadAll(requirementsout).filter(Boolean)[0];
-        const payload = stdout;
-
-        return {
-          meta,
-          readme,
-          payload,
-          requirements,
-        };
-      } catch (e) {
-        console.error(chalk.red(`error`), `Helm Compile - ${e}`);
+      if (requirements) {
+        model.requirements = requirements;
       }
+
+      return model;
+    } else {
+      throw new Error(`Chart.(yaml|yml) file not found`);
     }
   }
 }

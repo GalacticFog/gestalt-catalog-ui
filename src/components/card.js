@@ -27,7 +27,7 @@ const CardItem = memo(({ node, onDeploy }) => (
     />
     <CardActionArea component={Link} to={node.fields.slug}>
       <CardContent>
-        <Typography gutterBottom variant="h5" component="h2" align="center">
+        <Typography gutterBottom variant="subtitle2" align="center">
           {node.meta.name}
         </Typography>
       </CardContent>
@@ -41,13 +41,14 @@ const CardItem = memo(({ node, onDeploy }) => (
 
     <CardActions>
       <Row center>
-        <Button
-          onClick={() => onDeploy(node)}
-          size="small"
-          color="primary"
-        >
+        {node.deployable &&
+          <Button
+            onClick={() => onDeploy(node)}
+            size="small"
+            color="primary"
+          >
           Deploy
-        </Button>
+        </Button>}
         <Button
           component={Link}
           to={node.fields.slug}

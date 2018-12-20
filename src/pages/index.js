@@ -24,7 +24,7 @@ const Cards = styled.div`
 
 const Item = styled.div`
   display: flex;
-  align-items: center;
+  flex-direction: column;
 
   &:not(:last-child) {
     padding-bottom: 16px;
@@ -84,7 +84,7 @@ class Index extends Component {
     const { filterBy } = this.state;
     const typeItems = allCatalogCompiledJson.edges.map(item => item.node.type);
     const types = uniq(typeItems);
-
+    
     if (filterBy) {
       return (
         <ChipButton
@@ -104,7 +104,7 @@ class Index extends Component {
         onClick={() => this.handleCatClick(type)}
       >
         <Typography>
-          {`${type} (${typeItems.length})`}
+          {`${type} (${typeItems.filter(t => t === type).length})`}
         </Typography>
       </CategoryButton>
     ));
@@ -153,7 +153,7 @@ class Index extends Component {
                   />
                 </Col>
                 {storeItems.map(({ node }) => (
-                  <Col flex={2} xs={12} sm={6} md={3} key={node.id}>
+                  <Col flex={2} xs={12} sm={6} md={4} key={node.id}>
                     <ModalConsumer>
                       {({ showModal }) => (
                         <Card node={node} onDeploy={() => showModal(Deploy, { node })} />
@@ -182,11 +182,12 @@ export const query = graphql`
     allCatalogCompiledJson {
       edges {
         node {
-          fields {
+          fields {  
             slug
           }
           id
           type
+          deployable
           meta {
             name
             version
@@ -194,7 +195,6 @@ export const query = graphql`
             home
             icon
           }
-          payload
         }
       }
     }
