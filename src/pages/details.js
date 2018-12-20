@@ -49,7 +49,7 @@ const Img = styled.img`
 
 const ReadmeSection = styled.div`
   padding: 8px;
-  /* overflow: auto; */
+  /* overflow-y: auto; */
 `;
 
 class Details extends Component {
@@ -94,8 +94,19 @@ class Details extends Component {
     }
   }
 
+  previewTitle() {
+    const { catalogCompiledJson: { payload } } = this.props.data;
+    
+    switch (payload.render) {
+      case 'code':
+        return payload.type;
+      default:
+        return payload.render;
+    }
+  }
+
   render() {
-    const { catalogCompiledJson: { meta, readme, deployable }, catalogCompiledJson } = this.props.data;
+    const { catalogCompiledJson: { type, meta, readme, deployable }, catalogCompiledJson } = this.props.data;
 
     return (
       <ModalProvider>
@@ -114,7 +125,7 @@ class Details extends Component {
               </Typography>
             </NavHeader>
             
-            <Col flex={6} xs={12} sm={12} md={6}>
+            <Col flex={10} xs={12} sm={12} md={12}>
               <Row gutter={10}>
                 <Col flex={12}>
                   <Header>
@@ -125,7 +136,7 @@ class Details extends Component {
                       <Typography gutterBottom variant="h4">
                         {meta.name}
                       </Typography>
-
+                      
                       {deployable &&
                         <ModalConsumer>
                         {({ showModal }) => (
@@ -147,8 +158,16 @@ class Details extends Component {
                         <Col flex={12}>
                           <Summary>
                             <Typography gutterBottom variant="h6">
+                              Type
+                            </Typography>
+
+                            <Typography gutterBottom component="p">
+                              {type}
+                            </Typography>
+
+                            <Typography gutterBottom variant="h6">
                               Version
-                          </Typography>
+                            </Typography>
 
                             <Typography gutterBottom component="p">
                               {meta.version}
@@ -181,12 +200,13 @@ class Details extends Component {
                       </Tab>
                       : <div />
                     }
+
+                    <Tab title={this.previewTitle()}>
+                      {this.renderPreview()}
+                    </Tab>
                   </Tabs>
                 </Col>
               </Row>
-            </Col>
-            <Col flex={6} xs={12} sm={12} md={6}>
-              {this.renderPreview()}
             </Col>
           </Row>
         </Main>
@@ -198,6 +218,7 @@ class Details extends Component {
 export const query = graphql`
   query ($slug: String) {
     catalogCompiledJson(fields: {slug: {eq: $slug}}) {
+      type
       meta {
         name
         version

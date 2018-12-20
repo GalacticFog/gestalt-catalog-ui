@@ -1,5 +1,3 @@
-
-// Requires Node > 10, kubernetes-helm, (npm install rimraf chalk js-yaml showdown)
 const Plugin = require('../../lib/Plugin');
 const { readFile, readmeToHTML } = require('../../lib/util');
 const path = require('path');

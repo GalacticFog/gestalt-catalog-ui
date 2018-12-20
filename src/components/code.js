@@ -16,7 +16,7 @@ const Code = ({ value, mode = 'yaml' }) => {
         value={value}
         readOnly
         width="100%"
-        height="calc(100vh - 56px)"
+        // height="calc(100vh - 56px)"
         showPrintMargin={false}
         editorProps={{ $blockScrolling: true }}
       />
