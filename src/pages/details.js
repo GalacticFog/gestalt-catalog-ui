@@ -108,7 +108,7 @@ class Details extends Component {
   }
 
   render() {
-    const { catalogCompiledJson: { type, meta, readme, payload, deployable }, catalogCompiledJson } = this.props.data;
+    const { catalogCompiledJson: { type, meta, readme, payload, deploy }, catalogCompiledJson } = this.props.data;
 
     return (
       <ModalProvider>
@@ -139,7 +139,7 @@ class Details extends Component {
                         {meta.name}
                       </Typography>
                       
-                      {deployable &&
+                      {deploy.enabled &&
                         <ModalConsumer>
                         {({ showModal }) => (
                           <Button
@@ -238,7 +238,13 @@ export const query = graphql`
           name
         }
       }
-      deployable
+      deploy {
+        enabled
+        type
+        url
+        method
+        headers
+      }
       payload {
         type
         render

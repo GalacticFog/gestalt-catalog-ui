@@ -41,7 +41,7 @@ const CardItem = memo(({ node, onDeploy }) => (
 
     <CardActions>
       <Row center>
-        {node.deployable &&
+        {node.deploy.enabled &&
           <Button
             onClick={() => onDeploy(node)}
             size="small"

@@ -15,13 +15,6 @@ const defaultCtx = {
 };
 
 export default function API(ctx = defaultCtx) {
-  const kubeAPI = axios.create({
-    headers: {
-      'Content-Type': 'application/yaml',
-      Authorization: `Bearer ${ctx.token}`,
-    },
-  });
-
   const metaAPI = axios.create({
     headers: {
       'Content-Type': 'application/json',
@@ -41,6 +34,13 @@ export default function API(ctx = defaultCtx) {
   }
 
   async function deployKube(providerId, namespace, releaseName, payload) {
+    const kubeAPI = axios.create({
+      headers: {
+        'Content-Type': 'application/yaml',
+        Authorization: `Bearer ${ctx.token}`,
+      },
+    });
+
     return await kubeAPI.post(`${ctx.fqon}/providers/${providerId}/kube/chart?namespace=${namespace}&source=helm&releaseName=${releaseName}&metaEnv=${ctx.environmentId}`, payload);
   }
 
@@ -48,8 +48,24 @@ export default function API(ctx = defaultCtx) {
     return  await metaAPI.get(`${buildBaseURL()}/providers?type=${type}`);
   }
 
+  async function genericDeploy({ url, method = 'post', headers = "{}", payload }) {
+    const methodToLower = method.toLowerCase();
+    const parsedHeaders = JSON.parse(headers);
+    const genericAPI = axios.create({
+      headers: { ...parsedHeaders },
+    });
+
+    if (payload) {
+      return await genericAPI[methodToLower](url, payload);
+    }
+
+    return await genericAPI[methodToLower](url);
+
+  }
+
   return Object.create({
     deployKube,
     getProviders,
+    genericDeploy,
   })
 }

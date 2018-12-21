@@ -23,6 +23,9 @@ class API extends Plugin {
           icon,
         },
         readme: readme,
+        deploy: {
+          enabled: false,
+        },
         payload: {
           type: payloadType,
           render: 'swagger',  

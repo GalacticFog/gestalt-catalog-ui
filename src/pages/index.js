@@ -193,7 +193,13 @@ export const query = graphql`
           }
           id
           type
-          deployable
+          deploy {
+            enabled
+            type
+            url
+            method
+            headers
+          }
           meta {
             name
             version
