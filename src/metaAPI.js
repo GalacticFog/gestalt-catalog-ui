@@ -7,13 +7,17 @@ axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.headers.common.Accept = 'application/json';
 
 const defaultCtx = {
-  fqon: '',
-  workspaceId: '',
-  environmentId: '',
   token: '',
+  contextMeta: {
+    fqon: '',
+    workspaceId: '',
+    environmentId: '',
+  },
 };
 
-export default function API(ctx = defaultCtx) {
+export default function API(ctx) {
+  const context = { ...defaultCtx, ctx };
+  
   const metaAPI = axios.create({
     baseURL: deployBaseURL,
     headers: {
@@ -23,26 +27,30 @@ export default function API(ctx = defaultCtx) {
   });
 
   function buildBaseURL() {
-    switch (ctx.context) {
+    const { contextMeta } = context;
+
+    switch (contextMeta.context) {
       case 'workspace':
-        return `${ctx.fqon}/workspaces/${ctx.workspaceId}`;
+        return `${contextMeta.fqon}/workspaces/${contextMeta.workspaceId}`;
       case 'environment':
-        return `${ctx.fqon}/environments/${ctx.environmentId}`;
+        return `${contextMeta.fqon}/environments/${contextMeta.environmentId}`;
       default:
-        return `${ctx.fqon}`;
+        return `${contextMeta.fqon}`;
     }
   }
 
   async function deployKube(providerId, namespace, releaseName, payload) {
+    const { contextMeta, token } = context;
+
     const kubeAPI = axios.create({
       baseURL: deployBaseURL,
       headers: {
         'Content-Type': 'application/yaml',
-        Authorization: `Bearer ${ctx.token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
-    return await kubeAPI.post(`${ctx.fqon}/providers/${providerId}/kube/chart?namespace=${namespace}&source=helm&releaseName=${releaseName}&metaEnv=${ctx.environmentId}`, payload);
+    return await kubeAPI.post(`${contextMeta.fqon}/providers/${providerId}/kube/chart?namespace=${namespace}&source=helm&releaseName=${releaseName}&metaEnv=${contextMeta.environmentId}`, payload);
   }
 
   async function getProviders(type) {
@@ -50,16 +58,23 @@ export default function API(ctx = defaultCtx) {
   }
 
   async function genericDeploy({ url, method = 'post', headers = "{}", payload }) {
+    const { token } = context;
     const methodToLower = method.toLowerCase();
     const parsedHeaders = JSON.parse(headers);
     const genericAPI = axios.create({
-      headers: { ...parsedHeaders },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        ...parsedHeaders,
+      },
     });
 
-    console.log(await genericAPI[methodToLower](url, payload))
-
     if (payload) {
-      return await genericAPI[methodToLower](url, payload);
+      const fullPayload = {
+        context,
+        payload,
+      };
+      
+      return await genericAPI[methodToLower](url, fullPayload);
     }
 
     return await genericAPI[methodToLower](url);

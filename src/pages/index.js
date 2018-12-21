@@ -200,6 +200,11 @@ export const query = graphql`
             method
             headers
           }
+          payload {
+            type
+            render
+            data
+          }
           meta {
             name
             version
