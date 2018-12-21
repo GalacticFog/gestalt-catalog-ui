@@ -28,7 +28,7 @@ class Helm extends Plugin {
     const chart = files.filter(f => chartMatch.test(f));
 
     if (chart.length) {
-      const { stdout } = this.helmCompile(filePath);
+      const data = this.helmCompile(filePath);
       const chartPath = path.join(filePath, chart[0]);
       const meta = readFile(chartPath);
       const requirements = this.generateRequirements(
@@ -45,7 +45,7 @@ class Helm extends Plugin {
         payload: {
           type: 'yaml',
           render: 'code',
-          data: stdout,
+          data,
         },
       };
 
