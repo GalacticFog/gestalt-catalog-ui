@@ -89,8 +89,10 @@ class Details extends Component {
     switch (payload.render) {
       case 'swagger':
         return <Swagger value={JSON.parse(payload.data)} />;
-      default:
+      case 'code':
         return <Code value={payload.data} mode={payload.type} />;
+      default:
+        return null;
     }
   }
 
@@ -106,7 +108,7 @@ class Details extends Component {
   }
 
   render() {
-    const { catalogCompiledJson: { type, meta, readme, deployable }, catalogCompiledJson } = this.props.data;
+    const { catalogCompiledJson: { type, meta, readme, payload, deployable }, catalogCompiledJson } = this.props.data;
 
     return (
       <ModalProvider>
@@ -201,9 +203,13 @@ class Details extends Component {
                       : <div />
                     }
 
-                    <Tab title={this.previewTitle()}>
-                      {this.renderPreview()}
-                    </Tab>
+                    {payload.data
+                      ?
+                      <Tab title={this.previewTitle()}>
+                        {this.renderPreview()}
+                      </Tab>
+                      : <div />
+                    }
                   </Tabs>
                 </Col>
               </Row>
