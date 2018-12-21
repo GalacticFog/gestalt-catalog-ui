@@ -41,7 +41,10 @@ class Helm extends Plugin {
           icon: meta.icon || icon,
         },
         readme,
-        deployable: true,
+        deploy: {
+          enabled: true,
+          type: 'custom',
+        },
         payload: {
           type: 'yaml',
           render: 'code',

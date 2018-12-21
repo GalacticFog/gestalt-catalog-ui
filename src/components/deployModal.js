@@ -80,9 +80,24 @@ class FormDialog extends React.Component {
     const API = new metaAPI(context);
 
     try {
-      this.setState({ error: null, pending: true });
-      const { data } = await API.deployKube(providerId, namespace, releaseName, node.payload.data);
-      this.setState({ response: data })
+      if (node.deploy.enabled) {
+        this.setState({ error: null, pending: true });
+        if (node.deploy.type === 'generic') {
+          const { data } = await API.genericDeploy({
+            url: node.deploy.url,
+            method: node.deploy.method,
+            headers: node.deploy.headers,
+            payload: node.payload.data,
+          });
+          this.setState({ response: data })
+        }
+
+        if (node.deploy.type === 'custom') {
+          const { data } = await API.deployKube(providerId, namespace, releaseName, node.payload.data);
+          this.setState({ response: data })
+        }
+      }
+
       // this.handleClose();
     } catch (error) {
       this.setState({ response: get(error, 'response.data') || error });

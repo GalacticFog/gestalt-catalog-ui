@@ -1,5 +1,5 @@
 const Plugin = require('../../lib/Plugin');
-const { readFile } = require('../../lib/util');
+const { readFile, IsJsonString } = require('../../lib/util');
 const path = require('path');
 
 class Resource extends Plugin {
@@ -10,20 +10,23 @@ class Resource extends Plugin {
 
     if (entry.length) {
       const metaPath = path.join(filePath, entry[0]);
-      const meta = readFile(metaPath);
+      const { name, description, version, deploy } = readFile(metaPath);
       const payloadType = entry[0].endsWith('.yaml') || entry[0].endsWith('.yml')
         ? 'yaml'
         : 'json';
 
       return {
         meta: {
-          name: meta.name,
-          version: meta.version,
-          description: meta.description,
+          name,
+          version,
+          description,
           icon,
         },
-        readme: readme,
-        deployable: true,
+        readme,
+        deploy: {
+          enabled: true,
+          ...deploy,
+        },
         payload: {
           type: payloadType,
           render: 'none',
