@@ -1,8 +1,18 @@
 const Plugin = require('../../lib/Plugin');
-const { readFile, IsJsonString } = require('../../lib/util');
+const { readFile, isJSON } = require('../../lib/util');
 const path = require('path');
 
 class Resource extends Plugin {
+  formatDeployHeaders(deploy) {
+    if (deploy && deploy.headers) {
+      return isJSON(deploy.headers)
+        ? headers
+        : JSON.stringify(deploy.headers);
+    }
+
+    return JSON.stringify({});
+  }
+
   async handler() {
     const { filePath, files, icon, readme } = this.context;
     const swaggerMatch = new RegExp(/metadata.(json|yaml|yml)/gi);
@@ -11,6 +21,7 @@ class Resource extends Plugin {
     if (entry.length) {
       const metaPath = path.join(filePath, entry[0]);
       const { name, description, version, deploy } = readFile(metaPath);
+      const headers = this.formatDeployHeaders(deploy);
       const payloadType = entry[0].endsWith('.yaml') || entry[0].endsWith('.yml')
         ? 'yaml'
         : 'json';
@@ -24,8 +35,9 @@ class Resource extends Plugin {
         },
         readme,
         deploy: {
-          enabled: true,
           ...deploy,
+          enabled: true,
+          headers,
         },
         payload: {
           type: payloadType,

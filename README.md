@@ -49,15 +49,24 @@ Plugins are used transform some directory of files into a data model the gestalt
     version: '1.0.0',
     icon, // available via this.context
   }
+  deploy: {
+    enabled: true | false, // if the deploy button is shown on catalog items
+    type: 'generic | custom', // 'generic' uses a genreic API call that you can pass deploy.url and deploy.headers to, basically a pass through api call to some lambda or service. 'custom' requires the gatsby ui code has a specific internal method defined
+    url: 'http://myapi:3000',
+    method: 'GET | POST | PUT | DELETE | PATCH',
+    headers: "{\"Content-Type\":\"application/json\"}", // as a sring of JSON
+  }
   payload: {
     type: 'json || yaml', // used to determine what the data format is
     render: 'swagger | code', // used to determine what view to render in the details
-    data: 'some data...',
+    data: 'some data...', // used for either/both display purposes (when render is specified) and as payload.data to deploy
   }
   readme, // optional - available via this.context
-  requirements, // optional- available via this.context
+  requirements, // optional
 }
 ```
+
+For a full representatio of the schema see `lib/schema`.
 
 To author a new plugin create a new file using the following boilerplate:
 
