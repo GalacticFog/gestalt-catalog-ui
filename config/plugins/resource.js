@@ -3,14 +3,30 @@ const { readFile, isJSON } = require('../../lib/util');
 const path = require('path');
 
 class Resource extends Plugin {
-  formatDeployHeaders(deploy) {
-    if (deploy && deploy.headers) {
+  formatHeaders(deploy) {
+    if (deploy.headers) {
       return isJSON(deploy.headers)
         ? headers
         : JSON.stringify(deploy.headers);
     }
 
     return JSON.stringify({});
+  }
+
+  formatDeploy(deploy) {
+    if (deploy) {
+
+      return {
+        ...deploy,
+        type: 'generic',
+        headers: this.formatHeaders(deploy),
+        enabled: true,
+      }
+    }
+
+    return {
+      enabled: false,
+    }
   }
 
   async handler() {
@@ -20,8 +36,9 @@ class Resource extends Plugin {
 
     if (entry.length) {
       const metaPath = path.join(filePath, entry[0]);
-      const { name, description, version, deploy } = readFile(metaPath);
-      const headers = this.formatDeployHeaders(deploy);
+      const { name, description, version, deploy, payload } = readFile(metaPath);
+      const deployModel = this.formatDeploy(deploy);
+      const data = payload ? JSON.stringify(payload.data) : '';
       const payloadType = entry[0].endsWith('.yaml') || entry[0].endsWith('.yml')
         ? 'yaml'
         : 'json';
@@ -34,15 +51,11 @@ class Resource extends Plugin {
           icon,
         },
         readme,
-        deploy: {
-          ...deploy,
-          enabled: true,
-          headers,
-        },
+        deploy: deployModel,
         payload: {
           type: payloadType,
           render: 'none',
-          // data: JSON.stringify(meta),
+          data,
         },
       };
     } else {

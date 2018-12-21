@@ -84,12 +84,11 @@ class FormDialog extends React.Component {
         this.setState({ error: null, pending: true });
 
         if (node.deploy.type === 'generic') {
- 
           const { data } = await API.genericDeploy({
             url: node.deploy.url,
             method: node.deploy.method,
             headers: node.deploy.headers,
-            payload: node.payload.data,
+            payload: get(node, 'payload.data'),
           });
           
           this.setState({ response: data })
