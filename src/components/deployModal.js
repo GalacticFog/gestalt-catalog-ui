@@ -82,13 +82,16 @@ class FormDialog extends React.Component {
     try {
       if (node.deploy.enabled) {
         this.setState({ error: null, pending: true });
+
         if (node.deploy.type === 'generic') {
+ 
           const { data } = await API.genericDeploy({
             url: node.deploy.url,
             method: node.deploy.method,
             headers: node.deploy.headers,
             payload: node.payload.data,
           });
+          
           this.setState({ response: data })
         }
 
@@ -106,9 +109,80 @@ class FormDialog extends React.Component {
     }
   }
 
+  renderForm() {
+    const { node } = this.props;
+    const { providerId, providers} = this.state;
+
+    if (node.deploy.type === 'generic') {
+      return (
+        <Typography variant="subtitle2">
+          Deploy {node.meta.name}
+          <pre>{JSON.stringify(node.deploy, null, 2)}</pre>
+        </Typography>
+      );
+    }
+
+    return (
+      <React.Fragment>
+        <FormControl fullWidth required>
+          <InputLabel htmlFor="providerId">Provider</InputLabel>
+          <Select
+            name="providerId"
+            required
+            input={<Input id="providerId" autoFocus required />}
+            value={providerId}
+            onChange={this.handleInputChange}
+          >
+            {!providers.length > 0 && <Progress id="loading-providers" />}
+            {providers.map(provider => (
+              <MenuItem key={provider.id} value={provider.id}>
+                <ListItemText primary={provider.name} />
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        <FormControl fullWidth>
+          <TextField
+            margin="dense"
+            id="namespace"
+            label="Namespace"
+            name="namespace"
+            type="text"
+            required
+            onChange={this.handleInputChange}
+          />
+        </FormControl>
+
+        <FormControl fullWidth>
+          <TextField
+            margin="dense"
+            id="Release"
+            label="Release Name"
+            name="releaseName"
+            type="text"
+            required
+            onChange={this.handleInputChange}
+          />
+        </FormControl>
+      </React.Fragment>
+    );
+  }
+
+  disableSubmit() {
+    const { node } = this.props;
+    const { providerId, pending } = this.state;
+    
+    if (node.deploy.type === 'custom' && (!providerId || pending)) {
+      return true;
+    }
+
+    return false;
+  }
+
   render() {
     const { node } = this.props;
-    const { providerId, providers, response, pending } = this.state;
+    const { response, pending } = this.state;
 
     return (
       <Dialog
@@ -116,52 +190,13 @@ class FormDialog extends React.Component {
         onClose={this.handleClose}
         aria-labelledby="form-dialog-title"
         fullWidth
+        maxWidth="md"
       >
         <Form onSubmit={this.handleSubmit} disabled={pending} autoComplete="off">
           <DialogTitle id="form-dialog-title">{`Deploy ${node.meta.name}`}</DialogTitle>
           <DialogContent>           
-            <FormControl fullWidth required>
-              <InputLabel htmlFor="providerId">Provider</InputLabel>
-              <Select
-                name="providerId"
-                required
-                input={<Input id="providerId" autoFocus required />}
-                value={providerId}
-                onChange={this.handleInputChange}
-              >
-                {!providers.length > 0 && <Progress id="loading-providers" />}
-                {providers.map(provider => (
-                  <MenuItem key={provider.id} value={provider.id}>
-                    <ListItemText primary={provider.name} />
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            
-            <FormControl fullWidth>
-              <TextField
-                margin="dense"
-                id="namespace"
-                label="Namespace"
-                name="namespace"
-                type="text"
-                required
-                onChange={this.handleInputChange}
-              />
-            </FormControl>
-            
-            <FormControl fullWidth>
-              <TextField
-                margin="dense"
-                id="Release"
-                label="Release Name"
-                name="releaseName"
-                type="text"
-                required
-                onChange={this.handleInputChange}
-              />
-            </FormControl>
-        
+            {this.renderForm()}
+
           </DialogContent>
 
           {pending && <Progress id="loading" />}
@@ -171,7 +206,7 @@ class FormDialog extends React.Component {
               {response ? 'Close' : 'Cancel'}
             </Button>
             {!response && 
-            <Button color="primary" type="submit" disabled={!providerId || pending}>
+            <Button color="primary" type="submit" disabled={this.disableSubmit()}>
               Deploy
             </Button>}
           </DialogActions>

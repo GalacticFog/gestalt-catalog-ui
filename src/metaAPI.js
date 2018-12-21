@@ -2,7 +2,6 @@ import axios from 'axios';
 import { deployBaseURL, deployTimeout } from '../config';
 
 // Axios Defaults
-axios.defaults.baseURL = deployBaseURL;
 axios.defaults.timeout = deployTimeout;
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.headers.common.Accept = 'application/json';
@@ -16,6 +15,7 @@ const defaultCtx = {
 
 export default function API(ctx = defaultCtx) {
   const metaAPI = axios.create({
+    baseURL: deployBaseURL,
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${ctx.token}`,
@@ -35,6 +35,7 @@ export default function API(ctx = defaultCtx) {
 
   async function deployKube(providerId, namespace, releaseName, payload) {
     const kubeAPI = axios.create({
+      baseURL: deployBaseURL,
       headers: {
         'Content-Type': 'application/yaml',
         Authorization: `Bearer ${ctx.token}`,
@@ -45,7 +46,7 @@ export default function API(ctx = defaultCtx) {
   }
 
   async function getProviders(type) {
-    return  await metaAPI.get(`${buildBaseURL()}/providers?type=${type}`);
+    return await metaAPI.get(`${buildBaseURL()}/providers?type=${type}`);
   }
 
   async function genericDeploy({ url, method = 'post', headers = "{}", payload }) {
@@ -54,6 +55,8 @@ export default function API(ctx = defaultCtx) {
     const genericAPI = axios.create({
       headers: { ...parsedHeaders },
     });
+
+    console.log(await genericAPI[methodToLower](url, payload))
 
     if (payload) {
       return await genericAPI[methodToLower](url, payload);
