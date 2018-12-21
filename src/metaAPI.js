@@ -16,8 +16,8 @@ const defaultCtx = {
 };
 
 export default function API(ctx) {
-  const context = { ...defaultCtx, ctx };
-  
+  const context = { ...defaultCtx, ...ctx };
+
   const metaAPI = axios.create({
     baseURL: deployBaseURL,
     headers: {
@@ -73,7 +73,7 @@ export default function API(ctx) {
         context,
         payload,
       };
-      
+
       return await genericAPI[methodToLower](url, fullPayload);
     }
 
