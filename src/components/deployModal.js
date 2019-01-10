@@ -1,6 +1,7 @@
 import React from 'react';
 import { isEqual, get } from 'lodash';
 import styled from 'styled-components';
+import { Row, Col } from 'react-flexybox';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -31,7 +32,6 @@ class FormDialog extends React.Component {
     response: null,
     pending: false,
     providerId: '',
-    namespace: '',
     releaseName: '',
   }
   async componentDidUpdate(prevProps) {
@@ -76,7 +76,7 @@ class FormDialog extends React.Component {
     e.preventDefault();
     
     const { context, node } = this.props;
-    const { providerId, namespace, releaseName } = this.state;
+    const { providerId, releaseName } = this.state;
     const API = new metaAPI(context);
 
     try {
@@ -95,8 +95,16 @@ class FormDialog extends React.Component {
         }
 
         if (node.deploy.type === 'custom') {
-          const { data } = await API.deployKube(providerId, namespace, releaseName, node.payload.data);
-          this.setState({ response: data })
+          if (!context.contextMeta.fqon || !context.contextMeta.environmentId) {
+            this.setState({
+              response: {
+                error: 'deployment requires that the context have an fqon and an environment id. Make sure that you are deployingt from an environment.',
+              }
+            });
+          } else {
+            const { data } = await API.deployKube(providerId, releaseName, node.payload.data);
+            this.setState({ response: data })   
+          }
         }
       }
 
@@ -123,47 +131,41 @@ class FormDialog extends React.Component {
 
     return (
       <React.Fragment>
-        <FormControl fullWidth required>
-          <InputLabel htmlFor="providerId">Provider</InputLabel>
-          <Select
-            name="providerId"
-            required
-            input={<Input id="providerId" autoFocus required />}
-            value={providerId}
-            onChange={this.handleInputChange}
-          >
-            {!providers.length > 0 && <Progress id="loading-providers" />}
-            {providers.map(provider => (
-              <MenuItem key={provider.id} value={provider.id}>
-                <ListItemText primary={provider.name} />
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <Row gutter={5}>
+          <Col flex={12}>
+            <FormControl fullWidth required>
+              <InputLabel htmlFor="providerId">Provider</InputLabel>
+              <Select
+                name="providerId"
+                required
+                input={<Input id="providerId" autoFocus required />}
+                value={providerId}
+                onChange={this.handleInputChange}
+              >
+                {!providers.length > 0 && <Progress id="loading-providers" />}
+                {providers.map(provider => (
+                  <MenuItem key={provider.id} value={provider.id}>
+                    <ListItemText primary={provider.name} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Col>
 
-        <FormControl fullWidth>
-          <TextField
-            margin="dense"
-            id="namespace"
-            label="Namespace"
-            name="namespace"
-            type="text"
-            required
-            onChange={this.handleInputChange}
-          />
-        </FormControl>
-
-        <FormControl fullWidth>
-          <TextField
-            margin="dense"
-            id="Release"
-            label="Release Name"
-            name="releaseName"
-            type="text"
-            required
-            onChange={this.handleInputChange}
-          />
-        </FormControl>
+          <Col flex={12}>
+            <FormControl fullWidth>
+              <TextField
+                margin="dense"
+                id="Release"
+                label="Release Name"
+                name="releaseName"
+                type="text"
+                required
+                onChange={this.handleInputChange}
+              />
+            </FormControl>
+          </Col>
+        </Row>
       </React.Fragment>
     );
   }

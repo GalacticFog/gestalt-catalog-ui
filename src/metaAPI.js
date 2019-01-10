@@ -40,7 +40,7 @@ export default function API(ctx) {
     }
   }
 
-  async function deployKube(providerId, namespace, releaseName, payload) {
+  async function deployKube(providerId, releaseName, payload) {
     const { contextMeta, baseURL, timeout, token } = context;
 
     const kubeAPI = axios.create({
@@ -52,7 +52,11 @@ export default function API(ctx) {
       },
     });
 
-    return await kubeAPI.post(`${contextMeta.fqon}/providers/${providerId}/kube/chart?namespace=${namespace}&source=helm&releaseName=${releaseName}&metaEnv=${contextMeta.environmentId}`, payload);
+    if (!contextMeta.fqon || !contextMeta.environmentId) {
+      throw new Error('deployment requires that the context contain an fqon and an environment id ');
+    }
+
+    return await kubeAPI.post(`${contextMeta.fqon}/providers/${providerId}/kube/chart?namespace=${contextMeta.environmentId}&source=helm&releaseName=${releaseName}&metaEnv=${contextMeta.environmentId}`, payload);
   }
 
   async function getProviders(type) {
