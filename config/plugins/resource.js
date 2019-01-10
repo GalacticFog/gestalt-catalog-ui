@@ -31,17 +31,24 @@ class Resource extends Plugin {
 
   async handler() {
     const { filePath, files, icon, readme } = this.context;
-    const swaggerMatch = new RegExp(/metadata.(json|yaml|yml)/gi);
-    const entry = files.filter(f => swaggerMatch.test(f));
+
+    // Find metadata file
+    const fileMatch = new RegExp(/metadata.(json|yaml|yml)/gi);
+    const entry = files.filter(f => fileMatch.test(f));
 
     if (entry.length) {
-      const metaPath = path.join(filePath, entry[0]);
-      const { name, description, version, deploy, payload } = readFile(metaPath);
+      // Get deploy model from higher-level directory
+
+      const { deploy, payload } = readFile(path.join(filePath, '../../metadata.yaml'));
       const deployModel = this.formatDeploy(deploy);
-      const data = payload ? JSON.stringify(payload.data) : '';
-      const payloadType = entry[0].endsWith('.yaml') || entry[0].endsWith('.yml')
-        ? 'yaml'
-        : 'json';
+
+      // Read catalog item metadata
+      const metaPath = path.join(filePath, entry[0]);
+      const { name, description, version } = readFile(metaPath);
+
+      // Look for a data.json file to determine the deployment payload
+      const data = JSON.stringify(readFile(path.join(filePath, 'data.json')));
+      const payloadType = payload.type;
 
       return {
         meta: {
@@ -59,7 +66,7 @@ class Resource extends Plugin {
         },
       };
     } else {
-      throw new Error(`swagger.(json|yaml|yml) file not found`);
+      throw new Error(`metadata.(json|yaml|yml) file not found`);
     }
   }
 }
