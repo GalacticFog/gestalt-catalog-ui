@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { deployBaseURL, deployTimeout } from '../config';
+import { deployTimeout } from '../config';
 
 // Axios Defaults
 axios.defaults.timeout = deployTimeout;
@@ -19,7 +19,8 @@ export default function API(ctx) {
   const context = { ...defaultCtx, ...ctx };
 
   const metaAPI = axios.create({
-    baseURL: deployBaseURL,
+    baseURL: ctx.baseURL,
+    timeout: ctx.timeout,
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${ctx.token}`,
@@ -40,10 +41,11 @@ export default function API(ctx) {
   }
 
   async function deployKube(providerId, namespace, releaseName, payload) {
-    const { contextMeta, token } = context;
+    const { contextMeta, baseURL, timeout, token } = context;
 
     const kubeAPI = axios.create({
-      baseURL: deployBaseURL,
+      baseURL,
+      timeout,
       headers: {
         'Content-Type': 'application/yaml',
         Authorization: `Bearer ${token}`,
