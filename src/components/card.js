@@ -23,6 +23,7 @@ const CardStyle = styled.div`
 
 const CardContent = styled.div`
   display: flex;
+  width: 100%;
 `;
 
 const Icon = styled.div`
