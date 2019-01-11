@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
-import Typography from '@material-ui/core/Typography';
 
 const SearchContainer = styled.div`
   background-color: #eeeeee;
@@ -35,10 +34,6 @@ const SearchClose = styled.div`
   align-items: center;
   height: 100%;
   width: 38px;
-`;
-
-const SearchInputTypography = styled(Typography)`
-  width: 100%;
 `;
 
 class Search extends PureComponent {
@@ -75,9 +70,7 @@ class Search extends PureComponent {
         <SearchInputIcon>
           <SearchIcon />
         </SearchInputIcon>
-        <SearchInputTypography variant="body1">
-          <SearchInput onChange={this.onChange} value={value} />
-        </SearchInputTypography>
+        <SearchInput onChange={this.onChange} value={value} />
         <SearchClose>
           <IconButton onClick={this.handleClear} aria-label="Search" disableRipple>
             <CloseIcon fontSize="small" />
