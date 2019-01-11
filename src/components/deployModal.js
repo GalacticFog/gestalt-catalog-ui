@@ -38,8 +38,8 @@ class FormDialog extends React.Component {
     const { context } = this.props;
     if (!isEqual(prevProps.context, this.props.context)) {
       const API = new metaAPI(context);
-      const { data } = await API.getProviders('Kubernetes');
-      this.setState({ providers: data });
+      const providers = await API.getProviders('Kubernetes');
+      this.setState({ providers });
     }
   }
   

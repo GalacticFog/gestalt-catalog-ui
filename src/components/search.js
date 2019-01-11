@@ -3,11 +3,10 @@ import styled from 'styled-components';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
-import { Row, Col } from 'react-flexybox';
 import Typography from '@material-ui/core/Typography';
 
 const SearchContainer = styled.div`
-  background-color: #E5E5E5;
+  background-color: #eeeeee;
   display: flex;
   align-items: center;
   width: 100%;
@@ -72,23 +71,19 @@ class Search extends PureComponent {
     const { value } = this.state;
 
     return (
-      <Row>
-        <Col flex={6} xs={12} sm={12}>
-          <SearchContainer>
-            <SearchInputIcon>
-              <SearchIcon />
-            </SearchInputIcon>
-            <SearchInputTypography variant="body1">
-              <SearchInput onChange={this.onChange} value={value} />
-            </SearchInputTypography>
-            <SearchClose>
-              <IconButton onClick={this.handleClear}>
-                <CloseIcon fontSize="small" />
-              </IconButton>
-            </SearchClose>
-          </SearchContainer>
-        </Col>
-      </Row>
+      <SearchContainer>
+        <SearchInputIcon>
+          <SearchIcon />
+        </SearchInputIcon>
+        <SearchInputTypography variant="body1">
+          <SearchInput onChange={this.onChange} value={value} />
+        </SearchInputTypography>
+        <SearchClose>
+          <IconButton onClick={this.handleClear} aria-label="Search" disableRipple>
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        </SearchClose>
+      </SearchContainer>
     );
   }
 }

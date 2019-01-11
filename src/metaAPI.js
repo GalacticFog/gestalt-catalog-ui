@@ -60,7 +60,13 @@ export default function API(ctx) {
   }
 
   async function getProviders(type) {
-    return await metaAPI.get(`${buildBaseURL()}/providers?type=${type}`);
+    const { data } = await metaAPI.get(`${buildBaseURL()}/providers?type=${type}`);
+
+    if (data && Array.isArray(data)) {
+      return data;
+    }
+
+    return [];
   }
 
   async function genericDeploy({ url, method = 'post', headers = "{}", payload }) {
@@ -84,7 +90,6 @@ export default function API(ctx) {
     }
 
     return await genericAPI[methodToLower](url);
-
   }
 
   return Object.create({
