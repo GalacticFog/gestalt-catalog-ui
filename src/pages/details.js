@@ -169,15 +169,15 @@ class Details extends Component {
                     </Typography>
                     
                     {meta.version &&
-                      <Typography gutterBottom variant="body1" component="div" inline>&nbsp;&nbsp;v{meta.version}</Typography>}
+                      <Typography gutterBottom variant="body2" component="div" inline>&nbsp;&nbsp;v{meta.version}</Typography>}
                     
-                    <Typography gutterBottom variant="body1" component="div" >
+                    <Typography gutterBottom variant="body2" component="div" >
                       {type}
                     </Typography>
 
                     <Divider />
 
-                    <Typography gutterBottom variant="body1">
+                    <Typography gutterBottom variant="body2">
                       {meta.description}
                     </Typography>
                     

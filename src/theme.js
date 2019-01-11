@@ -1,6 +1,7 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
 import lightBlue from '@material-ui/core/colors/lightBlue';
+import grey from '@material-ui/core/colors/grey';
 
 export default createMuiTheme({
   palette: {
@@ -13,7 +14,7 @@ export default createMuiTheme({
     fontFamily: [
       '-apple-system',
       'BlinkMacSystemFont',
-      '"Segoe UI"',
+      // '"Segoe UI"',
       'Roboto',
       '"Helvetica Neue"',
       'Arial',
@@ -26,16 +27,14 @@ export default createMuiTheme({
       fontSize: '1rem',
       fontWeight: 500,
       lineHeight: '1.16667em',
-      color: 'rgba(0, 0, 0, 0.64)',
+      color: grey[800],
     },
-    body1: {
-      fontSize: '0.875rem',
-      fontWeight: 400,
-      lineHeight: '1.46429em',
-      color: 'rgba(0, 0, 0, 0.64)',
+    body2: {
+      color: grey[800],
+      lineHeight: '1.5',
     },
     caption: {
-      color: 'rgba(0, 0, 0, 0.40)',
+      color: grey[700],
       fontWeight: 400,
       fontSize: '0.75rem',
       lineHeight: 1.66,

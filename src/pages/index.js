@@ -3,7 +3,7 @@ import { Row, Col } from 'react-flexybox';
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
 import { graphql } from 'gatsby';
-import { debounce, uniq } from 'lodash';
+import { debounce, uniq, orderBy } from 'lodash';
 import Main from '../components/main';
 import NavHeader from '../components/navheader';
 import Card from '../components/card';
@@ -111,7 +111,7 @@ class Index extends Component {
         onClick={() => this.handleTypeClick(type)}
       >
         <CategoryItem>
-          <Typography color="inherit">
+          <Typography>
           {`${type} (${typeItems.filter(t => t === type).length})`}
           </Typography>
         </CategoryItem>
@@ -130,20 +130,22 @@ class Index extends Component {
         return item.node.meta.name.toLowerCase()
           .includes(searchText.toLowerCase());
       });
+    
+    const sortedStoreItems = orderBy(storeItems, 'name', 'asc');
 
     return (
       <ModalProvider>
         <ModalRoot />
         <Main>   
           <NavHeader>
-            <Typography variant="h6" color="inherit">
+            <Typography variant="h6">
               {data.site.siteMetadata.title}
             </Typography>
           </NavHeader>
           <Row gutter={5} fill justifyContent="center">
             <SideBar>
               <Item>
-                <Typography variant="subtitle2" color="inherit">
+                <Typography variant="subtitle2">
                   Type
                 </Typography>
               </Item>
@@ -164,7 +166,7 @@ class Index extends Component {
               </Row>
 
               <Row gutter={10} minColWidths={300}>
-                {storeItems.map(({ node }) => (
+                {sortedStoreItems.map(({ node }) => (
                   <Col flex={4} xs={12} sm={12} md={6} key={node.id}>
                     <Card
                       type={node.type}

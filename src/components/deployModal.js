@@ -122,10 +122,7 @@ class FormDialog extends React.Component {
 
     if (node.deploy.type === 'generic') {
       return (
-        <Typography variant="subtitle2">
-          Deploy {node.meta.name}
-          <pre>{JSON.stringify(node.deploy, null, 2)}</pre>
-        </Typography>
+        <pre>{JSON.stringify(node.deploy, null, 2)}</pre>
       );
     }
 
@@ -197,7 +194,6 @@ class FormDialog extends React.Component {
           <DialogTitle id="form-dialog-title">{`Deploy ${node.meta.name}`}</DialogTitle>
           <DialogContent>           
             {this.renderForm()}
-
           </DialogContent>
 
           {pending && <Progress id="loading" />}

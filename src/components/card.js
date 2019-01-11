@@ -50,6 +50,12 @@ const Header = styled.div`
   width: 100%;
 `;
 
+const Description = styled.div`
+  @media (min-width: 0) and (max-width: 599px) {
+    display: none;
+  }
+`;
+
 const Card = ({ type, node, slug }) => (
   <CardStyle onClick={() => navigate(slug)}>
     <CardContent>
@@ -61,14 +67,14 @@ const Card = ({ type, node, slug }) => (
         <Typography gutterBottom variant="h6">
           {truncate(node.name, 40)}
         </Typography>
-
         <Typography gutterBottom variant="caption">
-          {type} 
+          {type}
         </Typography>
-
-        <Typography gutterBottom variant="body1">
-          {truncate(node.description, 65)}
-        </Typography>
+        <Description>
+          <Typography gutterBottom variant="body2">
+            {truncate(node.description, 65)}
+          </Typography>
+        </Description>
       </Header>
     </CardContent>
   </CardStyle>
