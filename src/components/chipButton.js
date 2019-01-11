@@ -63,7 +63,7 @@ class ChipButton extends PureComponent {
     return (
       <ItemStyled>
         <Tag>
-          <Typography variant="caption">
+          <Typography variant="subtitle2">
             {this.props.item}
           </Typography>
         </Tag>
