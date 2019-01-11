@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import { MuiThemeProvider } from '@material-ui/core/styles';
 import { graphql } from 'gatsby';
 import styled from 'styled-components';
 import { Link } from "gatsby";
 import { Row, Col } from 'react-flexybox';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button';
 import ArrowBack from '@material-ui/icons/ArrowBack';
+import Button from '@material-ui/core/Button';
 import { ModalProvider, ModalConsumer } from '../components/modalContext';
 import ModalRoot from '../components/modalRoot';
 import Deploy from '../components/deployModal';
@@ -17,11 +15,10 @@ import Code from '../components/code';
 import Swagger from '../components/swagger';
 import Tabs from '../components/tabs';
 import Tab from '../components/tab';  
-import withTheme from '../components/withTheme';
+import withTheme from '../hocs/withTheme';
 import placeholderImg from '../static/placeholder.png';
 import withContext from '../hocs/withContext';
 import metaAPI from '../metaAPI'; 
-import theme from '../theme';
 
 const Background = styled.header`
   width: 100%;
@@ -42,13 +39,6 @@ const Header = styled.header`
   align-items: center;
   min-height: 250px;
   width: 100%;
-`;
-
-const Version = styled(Typography)`
-  color: #616161;
-  display: inline-block;
-  font-size: 14px;
-  padding-left: 8px;
 `;
 
 const TitleSection = styled.div`
@@ -112,8 +102,8 @@ class Details extends Component {
     if (requirements.dependencies.length > 0) {
       return (
         requirements.dependencies.map((dep, i) => (
-          <Typography key={i} gutterBottom variant="body2">
-            <div>{dep.name}</div>
+          <Typography key={i} gutterBottom variant="h6">
+            {dep.name}
           </Typography>
         ))
       );
@@ -150,104 +140,102 @@ class Details extends Component {
     const { catalogCompiledJson: { type, meta, readme, payload, deploy }, catalogCompiledJson } = this.props.data;
 
     return (
-      <MuiThemeProvider theme={theme}>
-        <ModalProvider>
-          <ModalRoot />
-          <Main>
-            <NavHeader>
-              <IconButton
-                component={Link}
-                to="/"
-              >
-                <ArrowBack />
-              </IconButton>
-              <Typography variant="h6" color="inherit">
-                Catalog Items
-              </Typography>
-            </NavHeader>
-      
-            <Row>
-              <Background>
-                <Content>
-                  <Header>
-                    <Logo>
-                      <Img src={meta.icon || placeholderImg} />
-                    </Logo>
+      <ModalProvider>
+        <ModalRoot />
+        <Main>
+          <NavHeader>
+            <Button 
+              variant="flat" 
+              // className={classes.button}
+              component={Link}
+              to="/"
+            >
+              <ArrowBack />
+              Catalog Items
+            </Button>
+          </NavHeader>
+    
+          <Row>
+            <Background>
+              <Content>
+                <Header>
+                  <Logo>
+                    <Img src={meta.icon || placeholderImg} />
+                  </Logo>
 
-                    <TitleSection>
-                      <Typography variant="h4" inline>
-                        {meta.name}
+                  <TitleSection>
+                    <Typography variant="h4" inline>
+                      {meta.name}
+                    </Typography>
+                    
+                    {meta.version &&
+                      <Typography gutterBottom variant="body1" component="div" inline>&nbsp;&nbsp;v{meta.version}</Typography>}
+                    
+                    <Typography gutterBottom variant="body1" component="div" >
+                      {type}
+                    </Typography>
+
+                    <Divider />
+
+                    <Typography gutterBottom variant="body1">
+                      {meta.description}
+                    </Typography>
+                    
+                    {deploy.enabled &&
+                      <DeploySection>
+                        <ModalConsumer>
+                        {({ showModal }) => (
+                          <Button
+                            size="large"
+                            variant="outlined"
+                            color="primary"
+                            onClick={() => showModal(Deploy, { node: catalogCompiledJson })}
+                          >
+                            Deploy
+                          </Button>
+                        )}
+                        </ModalConsumer>
+                      </DeploySection>}
+                  </TitleSection>
+                </Header>
+              </Content>
+            </Background>
+            
+            <Background noColor>
+              <Content>
+                <Tabs>
+                  <Tab title="Readme">
+                    <ReadmeSection>
+                      <Typography component="div" variant="body2">
+                        {readme
+                          ? <div dangerouslySetInnerHTML={{ __html: readme }} />
+                          : <NoData>Readme Unavailable</NoData>}
                       </Typography>
-                      
-                      {meta.version &&
-                        <Version gutterBottom variant="caption">v{meta.version}</Version>}
-                      
-                      <Typography gutterBottom variant="caption">
-                        {type}
-                      </Typography>
+                    </ReadmeSection>
+                  </Tab>
 
-                      <Divider />
+                  {payload.data
+                    ? <Tab title={this.previewTitle()}>
+                        {this.renderPreview()}
+                      </Tab>
+                    : <div />
+                  }
 
-                      <Typography gutterBottom variant="body2">
-                        {meta.description}
-                      </Typography>
-                      
-                      {deploy.enabled &&
-                        <DeploySection>
-                          <ModalConsumer>
-                          {({ showModal }) => (
-                            <Button
-                              size="large"
-                              variant="outlined"
-                              color="primary"
-                              onClick={() => showModal(Deploy, { node: catalogCompiledJson })}
-                            >
-                              Deploy
-                            </Button>
-                          )}
-                          </ModalConsumer>
-                        </DeploySection>}
-                    </TitleSection>
-                  </Header>
-                </Content>
-              </Background>
-              
-              <Background noColor>
-                <Content>
-                  <Tabs>
-                    <Tab title="Readme">
-                      <ReadmeSection>
-                        <Typography component="div">
-                          {readme
-                            ? <div dangerouslySetInnerHTML={{ __html: readme }} />
-                            : <NoData>Readme Unavailable</NoData>}
-                        </Typography>
-                      </ReadmeSection>
-                    </Tab>
-
-                    {payload.data
-                      ? <Tab title={this.previewTitle()}>
-                          {this.renderPreview()}
-                        </Tab>
-                      : <div />
-                    }
-
-                    <Tab title="Dependencies">
-                      <Row gutter={10}>
-                        <Col flex={12}>
-                          <Summary>
-                            {this.renderrequirements()}
-                          </Summary>
-                        </Col>
-                      </Row>
-                    </Tab>
-                  </Tabs>
-                </Content>
-              </Background>
-            </Row>
-          </Main>
-        </ModalProvider>
-      </MuiThemeProvider>
+                  <Tab title="Dependencies">
+                    <Row gutter={10}>
+                      <Col flex={12}>
+                        <Summary>
+                          {this.renderrequirements()}
+                        </Summary>
+                      </Col>
+                    </Row>
+                  </Tab>
+                </Tabs>
+              </Content>
+            </Background>
+          </Row>
+        </Main>
+      </ModalProvider>
     );
   }
 }

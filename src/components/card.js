@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { navigate } from 'gatsby';
 import Typography from '@material-ui/core/Typography';
+import { navigate } from 'gatsby';
 import { truncate } from '../util';
 import placeholderImg from '../static//placeholder.png';
 
@@ -9,7 +9,7 @@ const CardStyle = styled.div`
   border: 1px solid #e0e0e0;
   border-radius: 3px;
   box-shadow: 1px 1px 5px #eee;
-  min-height: 165px;
+  height: 165px;
   transition: 0.3s;
   padding: 16px;
   background-color: #fbfbfb;
@@ -43,33 +43,11 @@ const Img = styled.img`
   user-select: none;
 `;
 
-const Title = styled.div`
-  font-weight: 600;
-  font-size: 16px;
-  color: #424242;
-`;
-
-const Header = styled(Typography)`
+const Header = styled.div`
   display: block;
   flex-shrink: 1;
   padding: 16px 16px 16px 48px;
   width: 100%;
-`;
-
-const Description = styled(Typography)`
-  overflow: visible;
-  height: 48px;
-  flex-grow: 0;
-  color: #9e9e9e;
-  line-height: 1.5;
-
-  @media (min-width: 0) and (max-width: 400px) {
-    display: none;
-  }
-`;
-
-const Caption = styled(Typography)`
-  color: #bdbdbd;
 `;
 
 const Card = ({ type, node, slug }) => (
@@ -80,17 +58,17 @@ const Card = ({ type, node, slug }) => (
       </Icon>
 
       <Header>
-        <Title gutterBottom>
+        <Typography gutterBottom variant="h6">
           {truncate(node.name, 40)}
-        </Title>
+        </Typography>
 
-        <Caption gutterBottom variant="caption">
+        <Typography gutterBottom variant="caption">
           {type} 
-        </Caption>
+        </Typography>
 
-        <Description gutterBottom variant="body2">
+        <Typography gutterBottom variant="body1">
           {truncate(node.description, 65)}
-        </Description>
+        </Typography>
       </Header>
     </CardContent>
   </CardStyle>
