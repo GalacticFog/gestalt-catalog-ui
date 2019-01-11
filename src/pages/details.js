@@ -19,37 +19,78 @@ import Tab from '../components/tab';
 import withTheme from '../components/withTheme';
 import placeholderImg from '../static/placeholder.png';
 import withContext from '../hocs/withContext';
-import metaAPI from '../metaAPI';
+import metaAPI from '../metaAPI'; 
+
+const Background = styled.header`
+  width: 100%;
+  border-bottom: 1px solid #E5E5E5;
+  ${props => !props.noColor && 'background-color: #f5f5f5'};
+`;
+
+const Content = styled.div`
+  padding: 8px;
+  width: 100%;
+  max-width: 1344px;
+  margin: 0 auto;
+`;
 
 const Header = styled.header`
+  position: relative;
   display: flex;
   align-items: center;
-  height: 150px;
+  min-height: 250px;
   width: 100%;
-  padding-left: 8px;
+`;
+
+const Version = styled.div`
+  color: #616161;
+  display: inline-block;
+  font-size: 14px;
 `;
 
 const TitleSection = styled.div`
   padding-left: 16px;
+  width: 100%;
 `;
 
 const Summary = styled.div`
-  padding: 8px;
+  padding: 16px;
   width: 100%;
 `;
 
 const Logo = styled.div`
-  /* flex: 0 0 auto; */
+  flex-shrink: 0;
   width: 128px;
+  display: flex;
 `;
 
 const Img = styled.img`
-  margin: auto;
+  width: 128px;
+  height: 128px;
 `;
 
 const ReadmeSection = styled.div`
+  width: 100%;
   padding: 8px;
-  /* overflow-y: auto; */
+`;
+
+const NoData = styled.div`
+  font-size: 18px;
+  color: #9e9e9e;
+  width: 100%;
+  text-align: center;
+`;
+
+const Divider = styled.hr`
+  background-color: #eeeeee;
+  height: 3px;
+  padding: 0;
+  margin-top: 16px;
+  margin-bottom: 16px;
+`;
+
+const DeploySection = styled.div`
+  padding-top: 12px;
 `;
 
 class Details extends Component {
@@ -66,17 +107,11 @@ class Details extends Component {
 
     if (requirements.dependencies.length > 0) {
       return (
-        <React.Fragment>
-          <Typography gutterBottom variant="h6">
-            Dependencies
-        </Typography>
-
-          {requirements.dependencies.map((dep, i) => (
-            <Typography key={i} gutterBottom component="p">
-              {dep.name}
-            </Typography>
-          ))}
-        </React.Fragment>
+        requirements.dependencies.map((dep, i) => (
+          <Typography key={i} gutterBottom variant="body2">
+            <div>{dep.name}</div>
+          </Typography>
+        ))
       );
     }
 
@@ -114,106 +149,93 @@ class Details extends Component {
       <ModalProvider>
         <ModalRoot />
         <Main>
-          <Row justifyContent="center" fill>
-            <NavHeader>
-              <IconButton
-                component={Link}
-                to="/"
-              >
-                <ArrowBack />
-              </IconButton>
-              <Typography variant="h6" color="inherit">
-                Catalog Items
-              </Typography>
-            </NavHeader>
-            
-            <Col flex={10} xs={12} sm={12} md={12}>
-              <Row gutter={10}>
-                <Col flex={12}>
-                  <Header>
-                    <Logo>
-                      <Img src={meta.icon || placeholderImg} />
-                    </Logo>
-                    <TitleSection>
-                      <Typography gutterBottom variant="h4">
-                        {meta.name}
-                      </Typography>
-                      
-                      {deploy.enabled &&
+          <NavHeader>
+            <IconButton
+              component={Link}
+              to="/"
+            >
+              <ArrowBack />
+            </IconButton>
+            <Typography variant="h6" color="inherit">
+              Catalog Items
+            </Typography>
+          </NavHeader>
+    
+          <Row>
+            <Background>
+              <Content>
+                <Header>
+                  <Logo>
+                    <Img src={meta.icon || placeholderImg} />
+                  </Logo>
+
+                  <TitleSection>
+                    <Typography variant="h4">
+                      {meta.name} {meta.version && <Version>v{meta.version}</Version>}
+                    </Typography>
+
+                    <Typography gutterBottom variant="caption">
+                      {type}
+                    </Typography>
+
+                    <Divider />
+
+                    <Typography gutterBottom variant="body2">
+                      {meta.description}
+                    </Typography>
+                    
+                    {deploy.enabled &&
+                      <DeploySection>
                         <ModalConsumer>
                         {({ showModal }) => (
                           <Button
-                            variant="contained"
+                            size="large"
+                            variant="outlined"
                             color="primary"
                             onClick={() => showModal(Deploy, { node: catalogCompiledJson })}
                           >
                             Deploy
                           </Button>
                         )}
-                      </ModalConsumer>}
-                    </TitleSection>
-                  </Header>
+                        </ModalConsumer>
+                      </DeploySection>}
+                  </TitleSection>
+                </Header>
+              </Content>
+            </Background>
+            
+            <Background noColor>
+              <Content>
+                <Tabs>
+                  <Tab title="Readme">
+                    <ReadmeSection>
+                      <Typography>
+                        {readme
+                          ? <div dangerouslySetInnerHTML={{ __html: readme }} />
+                          : <NoData>Add a Readme</NoData>}
+                      </Typography>
+                    </ReadmeSection>
+                  </Tab>
 
-                  <Tabs>
-                    <Tab title="Details">
-                      <Row gutter={10}>
-                        <Col flex={12}>
-                          <Summary>
-                            <Typography gutterBottom variant="h6">
-                              Type
-                            </Typography>
-
-                            <Typography gutterBottom component="p">
-                              {type}
-                            </Typography>
-
-                            <Typography gutterBottom variant="h6">
-                              Version
-                            </Typography>
-
-                            <Typography gutterBottom component="p">
-                              {meta.version}
-                            </Typography>
-
-                            <Typography gutterBottom variant="h6">
-                              Overview
-                          </Typography>
-
-                            <Typography gutterBottom component="p">
-                              {meta.description}
-                            </Typography>
-                          </Summary>
-
-                          <Summary>
-                            {this.renderrequirements()}
-                          </Summary>
-                        </Col>
-                      </Row>
-                    </Tab>
-
-                    {readme
-                      ?
-                      <Tab title="Readme">
-                      <ReadmeSection>
-                        <Typography component="p">
-                          <div dangerouslySetInnerHTML={{ __html: readme }} />
-                        </Typography>
-                      </ReadmeSection>
-                      </Tab>
-                      : <div />
-                    }
-
-                    {payload.data
-                      ?
-                      <Tab title={this.previewTitle()}>
+                  {payload.data
+                    ? <Tab title={this.previewTitle()}>
                         {this.renderPreview()}
                       </Tab>
-                      : <div />
-                    }
-                  </Tabs>
-                </Col>
-              </Row>
-            </Col>
+                    : <div />
+                  }
+
+                  <Tab title="Dependencies">
+                    <Row gutter={10}>
+                      <Col flex={12}>
+                        <Summary>
+                          {this.renderrequirements()}
+                        </Summary>
+                      </Col>
+                    </Row>
+                  </Tab>
+                </Tabs>
+              </Content>
+            </Background>
           </Row>
         </Main>
       </ModalProvider>

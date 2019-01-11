@@ -6,6 +6,11 @@ const TabsStyle = styled.div`
   display: flex;
   margin-left: 5px;
   margin-right: 5px;
+  margin-bottom: 10px;
+
+  @media (min-width: 0) and (max-width: 599px) {
+    display: block;
+  }
 `;
 
 const Content = styled.div`

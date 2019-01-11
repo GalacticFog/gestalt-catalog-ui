@@ -11,20 +11,22 @@ import Search from '../components/search';
 import withTheme from '../components/withTheme';
 import ChipButton from '../components/chipButton';
 import SideBar from '../components/sidebar';
-import { ModalProvider, ModalConsumer } from '../components/modalContext';
+import { ModalProvider } from '../components/modalContext';
 import ModalRoot from '../components/modalRoot';
-import Deploy from '../components/deployModal';
 
-const Cards = styled.div`
+const CatalogListing = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
   height: 100%;
+  /* margin-top: 12px; */
+  width: 100%;
 `;
 
 const Item = styled.div`
   display: flex;
   flex-direction: column;
+  color: #424242;
 
   &:not(:last-child) {
     padding-bottom: 16px;
@@ -43,6 +45,7 @@ const CategoryButton = styled.button`
 
 const CategoryItem = styled.div`
   cursor: pointer;
+  color: #616161;
 `;
 
 class Index extends Component {
@@ -60,8 +63,8 @@ class Index extends Component {
     // TODO: fix debounce when search clear
     this.handleSearch = debounce(this.handleSearch, 300);
   } 
-
-  handleCatClick(type) {
+  
+  handleTypeClick(type) {
     this.setState(state => {
       if (state.filterBy === type) {
         return { filterBy: '' };
@@ -105,10 +108,10 @@ class Index extends Component {
     return types.map(type => (
       <CategoryButton
         key={type}
-        onClick={() => this.handleCatClick(type)}
+        onClick={() => this.handleTypeClick(type)}
       >
         <CategoryItem>
-          <Typography>
+          <Typography color="inherit">
           {`${type} (${typeItems.filter(t => t === type).length})`}
           </Typography>
         </CategoryItem>
@@ -140,7 +143,7 @@ class Index extends Component {
           <Row gutter={5} fill justifyContent="center">
             <SideBar>
               <Item>
-                <Typography variant="subtitle2">
+                <Typography variant="subtitle2" color="inherit">
                   Type
                 </Typography>
               </Item>
@@ -150,25 +153,28 @@ class Index extends Component {
               </Item>
             </SideBar>
 
-            <Cards>
-              <Row gutter={5}>
-                <Col flex={12}>
+            <CatalogListing>
+              <Row gutter={12}>
+                <Col flex={6} xs={12} sm={12} md={12}>
                   <Search
                     onChange={this.handleSearch}
                     onClear={this.handleClearSearch}
                   />
                 </Col>
+              </Row>
+
+              <Row gutter={10} minColWidths={300}>
                 {storeItems.map(({ node }) => (
-                  <Col flex={2} xs={12} sm={6} md={4} key={node.id}>
-                    <ModalConsumer>
-                      {({ showModal }) => (
-                        <Card node={node} onDeploy={() => showModal(Deploy, { node })} />
-                      )}
-                    </ModalConsumer>
+                  <Col flex={4} xs={12} sm={12} md={6} key={node.id}>
+                    <Card
+                      type={node.type}
+                      node={node.meta}
+                      slug={node.fields.slug}
+                    />
                   </Col>
                 ))}
               </Row>
-            </Cards>
+            </CatalogListing>
           </Row>
         </Main>
       </ModalProvider>
