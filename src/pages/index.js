@@ -131,7 +131,7 @@ class Index extends Component {
           .includes(searchText.toLowerCase());
       });
     
-    const sortedStoreItems = orderBy(storeItems, 'name', 'asc');
+    const sortedStoreItems = orderBy(storeItems, ['node.meta.name'], 'asc');
 
     return (
       <ModalProvider>
