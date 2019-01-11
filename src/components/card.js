@@ -39,6 +39,7 @@ const Img = styled.img`
   margin: 6px;
   width: 96px;
   height: 96px;
+  user-select: none;
 `;
 
 const Title = styled.div`
@@ -47,25 +48,26 @@ const Title = styled.div`
   color: #424242;
 `;
 
-const Header = styled.div`
+const Header = styled(Typography)`
   display: block;
   flex-shrink: 1;
   padding: 16px 16px 16px 48px;
   width: 100%;
 `;
 
-const Description = styled.div`
+const Description = styled(Typography)`
   overflow: visible;
   height: 48px;
   flex-grow: 0;
   color: #9e9e9e;
+  line-height: 1.5;
 
   @media (min-width: 0) and (max-width: 400px) {
     display: none;
   }
 `;
 
-const Caption = styled.div`
+const Caption = styled(Typography)`
   color: #bdbdbd;
 `;
 
@@ -77,23 +79,17 @@ const Card = ({ type, node, slug }) => (
       </Icon>
 
       <Header>
-        <Typography gutterBottom>
-          <Title>
-            {truncate(node.name, 40)}
-          </Title>
-        </Typography>  
+        <Title gutterBottom>
+          {truncate(node.name, 40)}
+        </Title>
 
-        <Typography gutterBottom variant="caption">
-          <Caption>
-            {type}
-          </Caption>
-        </Typography>  
+        <Caption gutterBottom variant="caption">
+          {type} 
+        </Caption>
 
-        <Typography gutterBottom variant="body2">
-          <Description>
-            {truncate(node.description, 65)}
-          </Description>
-          </Typography>
+        <Description gutterBottom variant="body2">
+          {truncate(node.description, 65)}
+        </Description>
       </Header>
     </CardContent>
   </CardStyle>

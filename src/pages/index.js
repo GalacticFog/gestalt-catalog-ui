@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import { Row, Col } from 'react-flexybox';
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
@@ -13,6 +14,7 @@ import ChipButton from '../components/chipButton';
 import SideBar from '../components/sidebar';
 import { ModalProvider } from '../components/modalContext';
 import ModalRoot from '../components/modalRoot';
+import theme from '../theme';
 
 const CatalogListing = styled.div`
   display: flex;
@@ -132,52 +134,54 @@ class Index extends Component {
       });
 
     return (
-      <ModalProvider>
-        <ModalRoot />
-        <Main>   
-          <NavHeader>
-            <Typography variant="h6" color="inherit">
-              {data.site.siteMetadata.title}
-            </Typography>
-          </NavHeader>
-          <Row gutter={5} fill justifyContent="center">
-            <SideBar>
-              <Item>
-                <Typography variant="subtitle2" color="inherit">
-                  Type
-                </Typography>
-              </Item>
+      <MuiThemeProvider theme={theme}>
+        <ModalProvider>
+          <ModalRoot />
+          <Main>   
+            <NavHeader>
+              <Typography variant="h6" color="inherit">
+                {data.site.siteMetadata.title}
+              </Typography>
+            </NavHeader>
+            <Row gutter={5} fill justifyContent="center">
+              <SideBar>
+                <Item>
+                  <Typography variant="subtitle2" color="inherit">
+                    Type
+                  </Typography>
+                </Item>
 
-              <Item>
-                {this.renderCategories()}
-              </Item>
-            </SideBar>
+                <Item>
+                  {this.renderCategories()}
+                </Item>
+              </SideBar>
 
-            <CatalogListing>
-              <Row gutter={12}>
-                <Col flex={6} xs={12} sm={12} md={12}>
-                  <Search
-                    onChange={this.handleSearch}
-                    onClear={this.handleClearSearch}
-                  />
-                </Col>
-              </Row>
-
-              <Row gutter={10} minColWidths={300}>
-                {storeItems.map(({ node }) => (
-                  <Col flex={4} xs={12} sm={12} md={6} key={node.id}>
-                    <Card
-                      type={node.type}
-                      node={node.meta}
-                      slug={node.fields.slug}
+              <CatalogListing>
+                <Row gutter={12}>
+                  <Col flex={6} xs={12} sm={12} md={12}>
+                    <Search
+                      onChange={this.handleSearch}
+                      onClear={this.handleClearSearch}
                     />
                   </Col>
-                ))}
-              </Row>
-            </CatalogListing>
-          </Row>
-        </Main>
-      </ModalProvider>
+                </Row>
+
+                <Row gutter={10} minColWidths={300}>
+                  {storeItems.map(({ node }) => (
+                    <Col flex={4} xs={12} sm={12} md={6} key={node.id}>
+                      <Card
+                        type={node.type}
+                        node={node.meta}
+                        slug={node.fields.slug}
+                      />
+                    </Col>
+                  ))}
+                </Row>
+              </CatalogListing>
+            </Row>
+          </Main>
+        </ModalProvider>
+      </MuiThemeProvider>
     );
   }
 }
