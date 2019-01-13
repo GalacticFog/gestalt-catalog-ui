@@ -63,6 +63,13 @@ class Index extends Component {
     // TODO: fix debounce when search clear
     this.handleSearch = debounce(this.handleSearch, 300);
   } 
+
+  componentDidMount() {
+    // Always ensure cards scroll to top on reload
+    setTimeout(() => { 
+      window.scrollTo(0, 0);
+    }, 0);
+  }
   
   handleTypeClick(type) {
     this.setState(state => {
