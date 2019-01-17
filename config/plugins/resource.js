@@ -44,7 +44,7 @@ class Resource extends Plugin {
 
       // Read catalog item metadata
       const metaPath = path.join(filePath, entry[0]);
-      const { name, description, version } = readFile(metaPath);
+      const { name, description, version, categories } = readFile(metaPath);
 
       // Look for a data.json file to determine the deployment payload
       const data = JSON.stringify(readFile(path.join(filePath, 'data.json')));
@@ -57,6 +57,7 @@ class Resource extends Plugin {
           description,
           icon,
         },
+        categories,
         readme,
         deploy: deployModel,
         payload: {
