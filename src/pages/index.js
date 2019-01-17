@@ -153,7 +153,7 @@ class Index extends Component {
             <SideBar>
               <Item>
                 <Typography variant="subtitle2">
-                  Type
+                  Filter by
                 </Typography>
               </Item>
 
