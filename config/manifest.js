@@ -2,12 +2,14 @@ const helmPlugin = require('./plugins/helm');
 const apiPlugin = require('./plugins/api');
 const { container, lambda, bundle, virtualMachine, } = require('./plugins/resource');
 
+const repo = process.env.SOURCE_REPO || 'https://github.com/GalacticFog/gestalt-poc'
+
 module.exports = [
   {
     plugin: helmPlugin,
     options: {
       name: 'gestalt-poc',
-      repo: 'https://github.com/GalacticFog/gestalt-poc',
+      repo: repo,
       directories: ['catalog/helm'],
     },
   },
@@ -15,7 +17,7 @@ module.exports = [
     plugin: apiPlugin,
     options: {
       name: 'gestalt-poc',
-      repo: 'https://github.com/GalacticFog/gestalt-poc',
+      repo: repo,
       directories: ['catalog/apis'],
     },
   },
@@ -23,7 +25,7 @@ module.exports = [
     plugin: container,
     options: {
       name: 'gestalt-poc',
-      repo: 'https://github.com/GalacticFog/gestalt-poc',
+      repo: repo,
       directories: ['catalog/containers'],
     },
   },
@@ -31,7 +33,7 @@ module.exports = [
     plugin: lambda,
     options: {
       name: 'gestalt-poc',
-      repo: 'https://github.com/GalacticFog/gestalt-poc',
+      repo: repo,
       directories: ['catalog/lambdas'],
     },
   },
@@ -39,7 +41,7 @@ module.exports = [
     plugin: bundle,
     options: {
       name: 'gestalt-poc',
-      repo: 'https://github.com/GalacticFog/gestalt-poc',
+      repo: repo,
       directories: ['catalog/bundles'],
     },
   },
@@ -47,7 +49,7 @@ module.exports = [
     plugin: virtualMachine,
     options: {
       name: 'gestalt-poc',
-      repo: 'https://github.com/GalacticFog/gestalt-poc',
+      repo: repo,
       directories: ['catalog/vms'],
     },
   },

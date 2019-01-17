@@ -7,7 +7,7 @@ const {
 } = require('./config');
 
 module.exports = {
-  pathPrefix: "/gestalt-catalog-ui",
+  pathPrefix: process.env.PATH_PREFIX || "/gestalt-catalog-ui",
   siteMetadata: {
     title,
     description,
@@ -21,11 +21,11 @@ module.exports = {
         // Add any options here
       },
     },
-    `gatsby-transformer-json`, 
+    'gatsby-transformer-json', 
     {
-      resolve: `gatsby-source-filesystem`,
+      resolve: 'gatsby-source-filesystem',
       options: {
-        name: `pages`,
+        name: 'pages',
         path: path.join(catalogCompiledDirectory),
       },
     },
