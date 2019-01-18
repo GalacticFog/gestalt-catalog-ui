@@ -23,7 +23,7 @@ class API extends Plugin {
     return {
       meta: {
         name: metadata.name || swagger.info.title,
-        version: metadata.info || swagger.info.version,
+        version: metadata.version || swagger.info.version,
         description: metadata.description || swagger.info.description,
         icon,
       },
