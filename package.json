@@ -13,7 +13,7 @@
     "serve": "gatsby serve --prefix-paths"
   },
   "dependencies": {
-    "@material-ui/core": "^3.8.3",
+    "@material-ui/core": "^3.9.0",
     "@material-ui/icons": "^3.0.2",
     "@wapps/gatsby-plugin-material-ui": "^1.2.0",
     "axios": "^0.18.0",
@@ -36,7 +36,7 @@
     "rimraf": "^2.6.3",
     "showdown": "^1.9.0",
     "styled-components": "^4.1.3",
-    "swagger-ui": "^3.20.4",
+    "swagger-ui": "^3.20.5",
     "typography": "^0.16.18",
     "yup": "^0.26.7"
   }
