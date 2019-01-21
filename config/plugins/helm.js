@@ -65,7 +65,7 @@ class Helm extends Plugin {
 
 module.exports = {
   name: 'helm',
-  type: 'Helm Chart',
+  type: 'Application',
   version: '1.0.0',
   handler: Helm,
 };
