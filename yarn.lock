@@ -752,10 +752,10 @@
   dependencies:
     stream "^0.0.2"
 
-"@material-ui/core@^3.8.3":
-  version "3.8.3"
-  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-3.8.3.tgz#5173ceb114e781b01d239a02d851ff6ffbdbc0b0"
-  integrity sha512-jgWx5uwpo+mCj+Y6JdygFRji8ZHDYZdbylqCXvpK42c2n6m/jsr4Y5Y7RnlgllkIqftKFGNnik/rd1gTLaF+Ig==
+"@material-ui/core@^3.9.0":
+  version "3.9.0"
+  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-3.9.0.tgz#7e74cf1979ee65f9fd388145764b3e58f48da6c6"
+  integrity sha512-9fxu0B9zx/TfiU0OJmwRFk+I+2J7fcXzTfQl+ZPxqlVRrPDqTHnMZlqWRJjlHCe3AVXlgpJ6/a4QCvGEohEbIQ==
   dependencies:
     "@babel/runtime" "^7.2.0"
     "@material-ui/system" "^3.0.0-alpha.0"
@@ -8930,10 +8930,10 @@ swagger-client@^3.8.22:
     utf8-bytes "0.0.1"
     utfstring "^2.0.0"
 
-swagger-ui@^3.20.4:
-  version "3.20.4"
-  resolved "https://registry.yarnpkg.com/swagger-ui/-/swagger-ui-3.20.4.tgz#848fcee8eda9f8730c437b220f2aed454acea67c"
-  integrity sha512-gHSDdmaEBuJr/QALjeNlaZhg6LJiKfOC/JNr0eY7AITi4Ekz3GhDTO15DQAoTrJV8F3ws1tl5l/o64Fje0WfUA==
+swagger-ui@^3.20.5:
+  version "3.20.5"
+  resolved "https://registry.yarnpkg.com/swagger-ui/-/swagger-ui-3.20.5.tgz#a99997dde909bb3f16b2caf35c51f2a39e645bd5"
+  integrity sha512-KCfhVHaq7VvMUsafecAQEfAYYAaLeuRLi6EBE1sZoaJuVJyqdR5+bTmGmkblWpjjNZaT4ykZuu/5hmX8EPOwsQ==
   dependencies:
     "@braintree/sanitize-url" "^2.0.2"
     "@kyleshockey/js-yaml" "^1.0.1"
