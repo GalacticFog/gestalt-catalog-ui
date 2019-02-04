@@ -98,7 +98,7 @@ class FormDialog extends React.Component {
           if (!context.contextMeta.fqon || !context.contextMeta.environmentId) {
             this.setState({
               response: {
-                error: 'deployment requires that the context have an fqon and an environment id. Make sure that you are deployingt from an environment.',
+                error: 'deployment requires that the context have an fqon and an environment id. Make sure that you are deploying from an environment.',
               }
             });
           } else {

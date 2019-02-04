@@ -2,22 +2,24 @@ import React from 'react';
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
 import { navigate } from 'gatsby';
+import grey from '@material-ui/core/colors/grey';
+import lightBlue from '@material-ui/core/colors/lightBlue';
 import { truncate } from '../util';
 import placeholderImg from '../static//placeholder.png';
 
 const CardStyle = styled.div`
-  border: 1px solid #e0e0e0;
-  border-radius: 3px;
-  box-shadow: 1px 1px 5px #eee;
+  border: 1px solid ${grey[300]};
+  border-radius: 4px;
+  box-shadow: 1px 1px 5px ${grey[300]};;
   height: 165px;
   transition: 0.3s;
   padding: 16px;
-  background-color: #fbfbfb;
+  background-color: white;
 
   &:hover {
     cursor: pointer;
-    box-shadow: 2px 2px 4px #eee; 
-    border: 1px solid #03a9f4;
+    box-shadow: 4px 6px 6px ${grey[300]}; 
+    border: 1px solid ${lightBlue[500]};
   }
 `;
 
