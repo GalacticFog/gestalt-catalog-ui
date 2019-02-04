@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Row, Col } from 'react-flexybox';
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
@@ -13,6 +13,7 @@ import ChipButton from '../components/chipButton';
 import SideBar from '../components/sidebar';
 import { ModalProvider } from '../components/modalContext';
 import ModalRoot from '../components/modalRoot';
+import grey from '@material-ui/core/colors/grey';
 
 const CatalogListing = styled.div`
   display: flex;
@@ -21,16 +22,6 @@ const CatalogListing = styled.div`
   height: 100%;
   /* margin-top: 12px; */
   width: 100%;
-`;
-
-const Item = styled.div`
-  display: flex;
-  flex-direction: column;
-  color: #424242;
-
-  &:not(:last-child) {
-    padding-bottom: 16px;
-  }
 `;
 
 const CategoryButton = styled.button`
@@ -44,11 +35,21 @@ const CategoryButton = styled.button`
 `;
 
 const CategoryItem = styled.div`
-  cursor: pointer;
-  color: #616161;
+  padding-left: 16px;
+  padding-right: 16px;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-height: 32px;
+
+  &:hover {
+    cursor: pointer;
+    background-color: ${grey[300]};
+    border-radius: 25px;
+  } 
 `;
 
-class Index extends Component {
+class Index extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -151,15 +152,11 @@ class Index extends Component {
           </NavHeader>
           <Row gutter={5} fill justifyContent="center">
             <SideBar>
-              <Item>
-                <Typography variant="subtitle2">
-                  Type
-                </Typography>
-              </Item>
+              <Typography variant="subtitle2" gutterBottom>
+                Filter by type
+              </Typography>
 
-              <Item>
-                {this.renderCategories()}
-              </Item>
+              {this.renderCategories()}
             </SideBar>
 
             <CatalogListing>
