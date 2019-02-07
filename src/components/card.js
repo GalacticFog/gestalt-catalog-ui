@@ -8,7 +8,7 @@ import { truncate } from '../util';
 import placeholderImg from '../static//placeholder.png';
 
 const CardStyle = styled.div`
-  border: 1px solid ${grey[300]};
+  border: 1px solid transparent;
   border-radius: 4px;
   box-shadow: 1px 1px 5px ${grey[300]};;
   height: 165px;
