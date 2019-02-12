@@ -5,8 +5,8 @@ import grey from '@material-ui/core/colors/grey';
 
 export default createMuiTheme({
   palette: {
-    primary: blue,
-    secondary: lightBlue,
+    primary: lightBlue,
+    secondary: blue,
   },
   typography: {
     useNextVariants: true,
