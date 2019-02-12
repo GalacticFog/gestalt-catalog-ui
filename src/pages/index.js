@@ -144,12 +144,12 @@ class Index extends PureComponent {
     return (
       <ModalProvider>
         <ModalRoot />
+        <NavHeader>
+          <Typography variant="h6">
+            {data.site.siteMetadata.title}
+          </Typography>
+        </NavHeader>
         <Main>   
-          <NavHeader>
-            <Typography variant="h6">
-              {data.site.siteMetadata.title}
-            </Typography>
-          </NavHeader>
           <Row gutter={5} fill justifyContent="center">
             <SideBar>
               <Typography variant="subtitle2" gutterBottom>
@@ -160,7 +160,7 @@ class Index extends PureComponent {
             </SideBar>
 
             <CatalogListing>
-              <Row gutter={12}>
+              <Row gutter={10} paddingTop="10px">
                 <Col flex={6} xs={12} sm={12} md={12}>
                   <Search
                     onChange={this.handleSearch}

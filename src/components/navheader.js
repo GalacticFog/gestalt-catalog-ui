@@ -3,6 +3,9 @@ import styled from 'styled-components';
 
 const NavHeader = styled.header`
   position: fixed;
+  @supports(position: sticky) {
+    position: sticky;
+  }
   top: 0;
   left: 0;
   right: 0;

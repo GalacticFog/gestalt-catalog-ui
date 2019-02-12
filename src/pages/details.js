@@ -142,19 +142,18 @@ class Details extends Component {
     return (
       <ModalProvider>
         <ModalRoot />
-        <Main>
-          <NavHeader>
-            <Button 
-              variant="flat" 
-              // className={classes.button}
-              component={Link}
-              to="/"
-            >
-              <ArrowBack />
-              Catalog Items
+        <NavHeader>
+          <Button
+            variant="flat"
+            // className={classes.button}
+            component={Link}
+            to="/"
+          >
+            <ArrowBack />
+            Catalog Items
             </Button>
-          </NavHeader>
-    
+        </NavHeader>
+        <Main>
           <Row>
             <Background>
               <Content>
